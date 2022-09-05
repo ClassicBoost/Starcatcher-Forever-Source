@@ -104,6 +104,24 @@ class Init extends FlxState
 			'When enabled, uses the custom Forever Engine chart editor!',
 			NOT_FORCED
 		],
+		'Hit Sounds' => [
+			false,
+			Checkmark,
+			'When enabled, hitting a note will play a tick sound',
+			NOT_FORCED
+		],
+		'Late Damage' => [
+			false,
+			Checkmark,
+			'When enabled, hitting a note late will damage you.',
+			NOT_FORCED
+		],
+		'Low Quality' => [
+			false,
+			Checkmark,
+			'When enabled, some stage assets won\'t be used.',
+			NOT_FORCED
+		],
 		'Disable Note Splashes' => [
 			false,
 			Checkmark,
