@@ -1,7 +1,7 @@
 # [Project Ori (v4.7)](https://gamejolt.com/games/oriderecoded/744453)
 This is a attempted recoded version of VS Ori Definitive Edition and Spirit Purgatory, made inside Forever Engine. It may take a while before I add everything to this but it will have new content.<br>
 
-This mod is controversal because of the incident that I caused from my destroyed mental health from constant harassment, I should be able to recover after a few months or something.
+This mod is controversal because of the incident that I caused from my destroyed mental health from constant harassment, I should be able to recover after a few months or something. (Note: I got a lot of my anger out so I don't hate ori as much anymore)
 ![image](https://m.gjcdn.net/fireside-post-image/700/16784255-ll-rk3xiqd5-v4.webp)
 
 # [Forever Engine](https://github.com/Yoshubs/FunkinForever)
