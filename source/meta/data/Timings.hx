@@ -19,8 +19,8 @@ class Timings
 		"sick" => [0, 55, 350, 100, ' [SFC]'],
 		"good" => [1, 80, 150, 75, ' [GFC]'],
 		"bad" => [2, 100, 0, 25, ' [FC]'],
-		"shit" => [3, 120, -50, -150],
-		"miss" => [4, 140, -100, -175],
+		"shit" => [3, 120, -50, -150, ' [FC-]'],
+		"miss" => [4, 140, -100, -175, ' [CB]'],
 	];
 
 	public static var msThreshold:Float = 0;
