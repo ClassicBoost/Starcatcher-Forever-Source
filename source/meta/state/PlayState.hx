@@ -134,8 +134,6 @@ class PlayState extends MusicBeatState
 
 	public static var uiHUD:ClassHUD;
 
-	private var latedamage:Int = 1;
-
 	public static var daPixelZoom:Float = 6;
 	public static var determinedChartType:String = "";
 
@@ -174,11 +172,6 @@ class PlayState extends MusicBeatState
 
 		assetModifier = 'base';
 		changeableSkin = 'default';
-
-		if (Init.trueSettings.get('Late Damage'))
-			latedamage = 3;
-		else
-			latedamage = 1;
 
 		// stop any existing music tracks playing
 		resetMusic();
@@ -939,14 +932,10 @@ class PlayState extends MusicBeatState
 					popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
 					if (coolNote.childrenNotes.length > 0)
 						Timings.notesHit++;
-					if (Init.trueSettings.get('Hit Sounds'))
-						FlxG.sound.play(Paths.sound('hitsound'), 0.7);
-					health += 0.03;
-					healthCall(Timings.judgementsMap.get(foundRating)[latedamage]);
+					healthCall(Timings.judgementsMap.get(foundRating)[3]);
 				} else if (coolNote.isSustainNote) {
 					// call updated accuracy stuffs
 					if (coolNote.parentNote != null) {
-						health += 0.01;
 						Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
 						healthCall(100 / coolNote.parentNote.childrenNotes.length);
 					}
@@ -964,7 +953,7 @@ class PlayState extends MusicBeatState
 		if (includeAnimation)
 		{
 			var stringDirection:String = UIStaticArrow.getArrowFromNumber(direction);
-			health -= 0.05;
+
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
 		}
@@ -1255,7 +1244,7 @@ class PlayState extends MusicBeatState
 		{
 			// doesnt matter miss ratings dont have timings
 			displayRating("miss", 'late');
-			healthCall(Timings.judgementsMap.get("miss")[latedamage]);
+			healthCall(Timings.judgementsMap.get("miss")[3]);
 		}
 		popUpCombo();
 
@@ -1268,7 +1257,7 @@ class PlayState extends MusicBeatState
 		// trolled this can actually decrease your combo if you get a bad/shit/miss
 		if (baseRating != null)
 		{
-			if (Timings.judgementsMap.get(baseRating)[latedamage] > 0)
+			if (Timings.judgementsMap.get(baseRating)[3] > 0)
 			{
 				if (combo < 0)
 					combo = 0;
@@ -1339,6 +1328,8 @@ class PlayState extends MusicBeatState
 	function healthCall(?ratingMultiplier:Float = 0)
 	{
 		// health += 0.012;
+		var healthBase:Float = 0.06;
+		health += (healthBase * (ratingMultiplier / 100));
 	}
 
 	function startSong():Void
