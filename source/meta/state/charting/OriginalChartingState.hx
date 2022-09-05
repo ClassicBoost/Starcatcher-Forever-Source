@@ -698,7 +698,11 @@ class OriginalChartingState extends MusicBeatState
 			+ " / "
 			+ Std.string(FlxMath.roundDecimal(songMusic.length / 1000, 2))
 			+ "\nSection: "
-			+ curSection;
+			+ curSection
+			+ '\n\ncurStep: '
+			+ curStep // THIS MAKES IT SO MUCH EASIER
+			+ '\ncurBeat: '
+			+ curBeat;
 		super.update(elapsed);
 	}
 

@@ -173,6 +173,7 @@ class Character extends FNFSprite
 
 			case 'old-ori':
 				// you fucking bitch you failed to use the xml generator properly
+				// nevermind, forever engine runs just fine.
 				tex = Paths.getSparrowAtlas('characters/OldORI');
 				frames = tex;
 				animation.addByPrefix('idle', 'ori idle0', 24, false);

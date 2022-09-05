@@ -75,8 +75,11 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				case 'old-decay':
 					curStage = 'old-shrek';
 					time = '';
-				default:
+				case 'tutorial' | 'test':
 					curStage = 'stage';
+					time = '';
+				default:
+					curStage = 'void';
 					time = '';
 			}
 
@@ -199,8 +202,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				add(cliff);
 				if (!Init.trueSettings.get('Low Quality'))
 				add(sauce);
-
-			default:
+			case 'stage':
 				PlayState.defaultCamZoom = 0.9;
 				curStage = 'stage';
 				var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('backgrounds/' + curStage + '/stageback'));
@@ -230,6 +232,9 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 				// add to the final array
 				add(stageCurtains);
+			default:
+				PlayState.defaultCamZoom = 0.6;
+				curStage = 'void';
 		}
 	}
 
@@ -327,7 +332,9 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				boyfriend.y += 220;
 				gf.x += 180;
 				gf.y += 300;
-
+			case 'void':
+				dad.x -= 200;
+				gf.visible = false;
 		}
 	}
 

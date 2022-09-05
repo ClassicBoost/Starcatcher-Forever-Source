@@ -65,7 +65,8 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8));
 		healthBar.scrollFactor.set();
-		healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
+		healthBar.createFilledBar(FlxColor.fromRGB(PlayState.dadcolor1, PlayState.dadcolor2, PlayState.dadcolor3), FlxColor.fromRGB(PlayState.bfcolor1, PlayState.bfcolor2, PlayState.bfcolor3));
+	//	healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
 		// healthBar
 		add(healthBar);
 
@@ -134,12 +135,12 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		// pain, this is like the 7th attempt
 		healthBar.percent = (PlayState.health * 50);
 
-		var iconLerp = 0.5;
+	/*	var iconLerp = 0.5;
 		iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.initialWidth, iconP1.width, iconLerp)));
 		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.initialWidth, iconP2.width, iconLerp)));
 
 		iconP1.updateHitbox();
-		iconP2.updateHitbox();
+		iconP2.updateHitbox();*/
 
 		var iconOffset:Int = 26;
 
@@ -148,16 +149,29 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 		if (healthBar.percent < 20)
 			iconP1.animation.curAnim.curFrame = 1;
+		else if (healthBar.percent > 80)
+			iconP1.animation.curAnim.curFrame = 2;
 		else
 			iconP1.animation.curAnim.curFrame = 0;
 
 		if (healthBar.percent > 80)
 			iconP2.animation.curAnim.curFrame = 1;
+		else if (healthBar.percent < 20)
+			iconP2.animation.curAnim.curFrame = 2;
 		else
 			iconP2.animation.curAnim.curFrame = 0;
 	}
 
 	private final divider:String = ' - ';
+
+	private function tweenIcons():Void
+		{
+			iconP1.scale.set(1.3, 1.3);
+			FlxTween.tween(iconP1, {"scale.x": 1, "scale.y": 1}, Conductor.stepCrochet / 500, {ease: FlxEase.cubeOut});
+			
+			iconP2.scale.set(1.3, 1.3);
+			FlxTween.tween(iconP2, {"scale.x": 1, "scale.y": 1}, Conductor.stepCrochet / 500, {ease: FlxEase.cubeOut});
+		}
 
 	public function updateScoreText()
 	{
@@ -194,11 +208,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	{
 		if (!Init.trueSettings.get('Reduced Movements'))
 		{
-			iconP1.setGraphicSize(Std.int(iconP1.width + 45));
-			iconP2.setGraphicSize(Std.int(iconP2.width + 45));
-
-			iconP1.updateHitbox();
-			iconP2.updateHitbox();
+			tweenIcons();
 		}
 		//
 	}

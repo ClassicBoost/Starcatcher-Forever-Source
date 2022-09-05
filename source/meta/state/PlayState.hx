@@ -130,6 +130,14 @@ class PlayState extends MusicBeatState
 
 	public static var songLength:Float = 0;
 
+	public static var bfcolor1:Int = 102;
+	public static var bfcolor2:Int = 255;
+	public static var bfcolor3:Int = 51;
+
+	public static var dadcolor1:Int = 255;
+	public static var dadcolor2:Int = 0;
+	public static var dadcolor3:Int = 0;
+
 	private var stageBuild:Stage;
 
 	public static var uiHUD:ClassHUD;
@@ -137,6 +145,7 @@ class PlayState extends MusicBeatState
 	private var latedamage:Int = 1;
 
 	public static var daPixelZoom:Float = 6;
+	private var bopbopbop:Bool = false;
 	public static var determinedChartType:String = "";
 
 	// strumlines
@@ -271,6 +280,44 @@ class PlayState extends MusicBeatState
 		dadOpponent.dance();
 		gf.dance();
 		boyfriend.dance();
+
+		// I know there is an easier way but I'm too lazy
+		if (SONG.player2 == 'bf') {
+			dadcolor1 = 49;
+			dadcolor2 = 176;
+			dadcolor3 = 209;
+		}
+		else if (SONG.player2 == 'ori' || SONG.player2 == 'old-ori') {
+			dadcolor1 = 255;
+			dadcolor2 = 255;
+			dadcolor3 = 255;
+		}
+		else if (SONG.player2 == 'evilori' || SONG.player2 == 'iro' || SONG.player2 == 'shriek') {
+			dadcolor1 = 0;
+			dadcolor2 = 0;
+			dadcolor3 = 0;
+		}
+		else if (SONG.player2 == 'old-shriek') {
+			dadcolor1 = 70;
+			dadcolor2 = 65;
+			dadcolor3 = 105;
+		}
+		else {
+			dadcolor1 = 255;
+			dadcolor2 = 0;
+			dadcolor3 = 0;
+		}
+
+		if (SONG.player1 == 'bf') {
+			bfcolor1 = 49;
+			bfcolor2 = 176;
+			bfcolor3 = 209;
+		}
+		else {
+			bfcolor1 = 102;
+			bfcolor2 = 255;
+			bfcolor3 = 51;
+		}
 
 		// set song position before beginning
 		Conductor.songPosition = -(Conductor.crochet * 4);
@@ -907,6 +954,16 @@ class PlayState extends MusicBeatState
 			coolNote.wasGoodHit = true;
 			vocals.volume = 1;
 
+			// this can make it annoying if you're playing as these guys
+			if (character.curCharacter == 'evilori' || character.curCharacter == 'iro') {
+				if(health > 0.05) health -= 0.01;
+				FlxG.camera.shake(0.01, 0.1);
+			}
+			if (character.curCharacter == 'shriek' || character.curCharacter == 'old-shriek') {
+				if(health > 0.32) health -= 0.02;
+				FlxG.camera.shake(0.01, 0.1);
+			}
+
 			characterPlayAnimation(coolNote, character);
 			if (characterStrums.receptors.members[coolNote.noteData] != null)
 				characterStrums.receptors.members[coolNote.noteData].playAnim('confirm', true);
@@ -1426,6 +1483,15 @@ class PlayState extends MusicBeatState
 	override function stepHit()
 	{
 		super.stepHit();
+
+		if (curSong.toLowerCase() == 'old-decay') { // wait do I have to put caps in songs name
+			switch (curStep) {
+				case 256, 512, 762, 2432:
+					bopbopbop = true;
+				case 384, 640, 1024, 2688:
+					bopbopbop = false;
+			}
+		}
 		///*
 		if (songMusic.time >= Conductor.songPosition + 20 || songMusic.time <= Conductor.songPosition - 20)
 			resyncVocals();
@@ -1455,12 +1521,23 @@ class PlayState extends MusicBeatState
 	{
 		super.beatHit();
 
+		if (bopbopbop == true) {
+			if ((curBeat % 1 == 0) && (!Init.trueSettings.get('Reduced Movements')))
+				{
+					FlxG.camera.zoom += 0.055;
+					camHUD.zoom += 0.05;
+					for (hud in strumHUD)
+						hud.zoom += 0.05;
+				}
+		}
+		else { // the camera would freak out of the bopbopbop event is on.
 		if ((FlxG.camera.zoom < 1.35 && curBeat % 4 == 0) && (!Init.trueSettings.get('Reduced Movements')))
-		{
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.05;
-			for (hud in strumHUD)
-				hud.zoom += 0.05;
+			{
+				FlxG.camera.zoom += 0.015;
+				camHUD.zoom += 0.05;
+				for (hud in strumHUD)
+					hud.zoom += 0.05;
+			}
 		}
 
 		if (SONG.notes[Math.floor(curStep / 16)] != null)

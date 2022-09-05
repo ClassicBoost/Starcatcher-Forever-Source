@@ -113,7 +113,7 @@ class Init extends FlxState
 		'Late Damage' => [
 			false,
 			Checkmark,
-			'When enabled, hitting a note late will damage you.',
+			'When enabled, hitting a note late or early will damage you.',
 			NOT_FORCED
 		],
 		'Low Quality' => [
