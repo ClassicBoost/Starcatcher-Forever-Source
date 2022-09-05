@@ -1,4 +1,4 @@
-# Project Ori (v4.7)
+# [Project Ori (v4.7)](https://gamejolt.com/games/oriderecoded/744453)
 This is a attempted recoded version of VS Ori Definitive Edition and Spirit Purgatory, now being made in Forever Engine. It may take a while before I add everything to this but it will have new content.
 
 # [Forever Engine](https://github.com/Yoshubs/FunkinForever)
