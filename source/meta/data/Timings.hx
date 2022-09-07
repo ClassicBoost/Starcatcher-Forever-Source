@@ -16,11 +16,11 @@ class Timings
 	// from left to right
 	// max milliseconds, score from it and percentage
 	public static var judgementsMap:Map<String, Array<Dynamic>> = [
-		"sick" => [0, 55, 350, 100, ' [SFC]'],
+		"sick" => [0, 55, 350, 100, ' [MFC]'],
 		"good" => [1, 80, 150, 75, ' [GFC]'],
 		"bad" => [2, 100, 0, 25, ' [FC]'],
 		"shit" => [3, 120, -50, -150, ' [FC-]'],
-		"miss" => [4, 140, -100, -175, ' [CB]'],
+		"miss" => [4, 140, -100, -175, ' [FC-]'], // yes I know it's not an FC if you miss but you can still get this rating with Late Damage off
 	];
 
 	public static var msThreshold:Float = 0;

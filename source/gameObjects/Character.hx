@@ -85,6 +85,10 @@ class Character extends FNFSprite
 				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
 				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
 				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
+				animation.addByPrefix('singUPalt', 'altbf altup', 24, false);
+				animation.addByPrefix('singLEFTalt', 'altbf altleft', 24, false);
+				animation.addByPrefix('singRIGHTalt', 'altbf altright0', 24, false);
+				animation.addByPrefix('singDOWNalt', 'altbf altdown0', 24, false);
 				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
 				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
 				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
@@ -181,6 +185,10 @@ class Character extends FNFSprite
 				animation.addByPrefix('singRIGHT', 'ori right0', 24);
 				animation.addByPrefix('singDOWN', 'ori down0', 24);
 				animation.addByPrefix('singLEFT', 'ori left0', 24);
+				animation.addByPrefix('singUPalt', 'ori up0', 24, false);
+				animation.addByPrefix('singLEFTalt', 'ori left0', 24, false);
+				animation.addByPrefix('singRIGHTalt', 'ori right0', 24, false);
+				animation.addByPrefix('singDOWNalt', 'ori down0', 24, false);
 
 				setGraphicSize(Std.int(width * 0.7));
 
@@ -198,6 +206,10 @@ class Character extends FNFSprite
 				animation.addByPrefix('singRIGHT', 'evilori right0', 24);
 				animation.addByPrefix('singDOWN', 'evilori down0', 24);
 				animation.addByPrefix('singLEFT', 'evilori left0', 24);
+				animation.addByPrefix('singUPalt', 'evilori up0', 24, false);
+				animation.addByPrefix('singLEFTalt', 'evilori left0', 24, false);
+				animation.addByPrefix('singRIGHTalt', 'evilori right0', 24, false);
+				animation.addByPrefix('singDOWNalt', 'evilori down0', 24, false);
 				animation.addByPrefix('aim', 'evilori aim0', 24);
 				animation.addByPrefix('attack', 'evilori shoot0', 24);
 

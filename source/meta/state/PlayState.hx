@@ -22,6 +22,7 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
+import flixel.text.FlxText;
 import gameObjects.*;
 import gameObjects.userInterface.*;
 import gameObjects.userInterface.notes.*;
@@ -90,7 +91,7 @@ class PlayState extends MusicBeatState
 	private static var prevCamFollow:FlxObject;
 
 	private var curSong:String = "";
-	private var gfSpeed:Int = 1;
+	public static var gfSpeed:Int = 1;
 
 	public static var health:Float = 1; // mario
 	public static var combo:Int = 0;
@@ -130,6 +131,9 @@ class PlayState extends MusicBeatState
 
 	public static var songLength:Float = 0;
 
+	private var songinfonew:FlxText;
+	private var composerslol:String;
+
 	public static var bfcolor1:Int = 102;
 	public static var bfcolor2:Int = 255;
 	public static var bfcolor3:Int = 51;
@@ -138,15 +142,28 @@ class PlayState extends MusicBeatState
 	public static var dadcolor2:Int = 0;
 	public static var dadcolor3:Int = 0;
 
+	var demoshit:FlxText;
+
+	private var demoSine:Float = 0;
+
+	private var healthgain:Float = 1;
+	private var antimashshit:Bool = false;
+	public static var enablescore:Bool = false;
+
+	public static var extraAnim:String = '';
+
 	private var stageBuild:Stage;
 
 	public static var uiHUD:ClassHUD;
 
 	private var latedamage:Int = 1;
+	private var skipCountdown:Bool = false;
 
 	public static var daPixelZoom:Float = 6;
 	private var bopbopbop:Bool = false;
 	public static var determinedChartType:String = "";
+
+	public static var bop:Int = 1;
 
 	// strumlines
 	private var dadStrums:Strumline;
@@ -154,6 +171,7 @@ class PlayState extends MusicBeatState
 
 	public static var strumLines:FlxTypedGroup<Strumline>;
 	public static var strumHUD:Array<FlxCamera> = [];
+//	public static var fuckyoulol:Array<FlxCamera> = [];
 
 	private var allUIs:Array<FlxCamera> = [];
 
@@ -188,6 +206,12 @@ class PlayState extends MusicBeatState
 			latedamage = 3;
 		else
 			latedamage = 1;
+
+		bop = 1;
+
+		enablescore = false;
+		antimashshit = false;
+		extraAnim = '';
 
 		// stop any existing music tracks playing
 		resetMusic();
@@ -319,6 +343,8 @@ class PlayState extends MusicBeatState
 			bfcolor3 = 51;
 		}
 
+		healthgain = 1;
+
 		// set song position before beginning
 		Conductor.songPosition = -(Conductor.crochet * 4);
 
@@ -385,7 +411,8 @@ class PlayState extends MusicBeatState
 			allUIs.push(strumHUD[i]);
 			FlxG.cameras.add(strumHUD[i]);
 			// set this strumline's camera to the designated camera
-			strumLines.members[i].cameras = [strumHUD[i]];
+		//	strumLines.members[i].cameras = [strumHUD[i]];
+			strumLines.members[i].cameras = [camHUD];
 		}
 		add(strumLines);
 
@@ -393,6 +420,46 @@ class PlayState extends MusicBeatState
 		add(uiHUD);
 		uiHUD.cameras = [camHUD];
 		//
+
+		var demoDisplay:String = "This mod is currently in a demo state, this is not final.";
+
+		demoshit = new FlxText(0, FlxG.height - 30, 0, demoDisplay, 20);
+		demoshit.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		demoshit.scrollFactor.set();
+		demoshit.screenCenter(X);
+		add(demoshit);
+
+		demoshit.cameras = [camHUD];
+
+		switch (curSong.toLowerCase())
+		{
+			case 'old-spirit-tree' | 'old-rtl' | 'old-decay':
+				composerslol = 'Composer(s): Rae';
+			default:
+				composerslol = 'Composer(s):'; // placeholder
+		}
+		songinfonew = new FlxText(0, 0, CoolUtil.dashToSpace(PlayState.SONG.song) + '\n' + composerslol + '\n', 12);
+		songinfonew.setFormat(Paths.font("vcr.ttf"), 40, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songinfonew.scrollFactor.set();
+		songinfonew.alpha = 1;
+		songinfonew.visible = true;
+		add(songinfonew);
+
+		songinfonew.cameras = [camHUD];
+
+		if (curSong.toLowerCase() == 'old-spirit-tree')
+			skipCountdown = true;
+		else
+			skipCountdown = false;
+
+		if (skipCountdown) {
+		uiHUD.visible = false;
+		strumLines.visible = false;
+		}
+		else { // incase if the HUD doesn't appear again after disappearing.
+		uiHUD.visible = true;
+		strumLines.visible = true;
+		}
 
 		// create a hud over the hud camera for dialogue
 		dialogueHUD = new FlxCamera();
@@ -520,7 +587,7 @@ class PlayState extends MusicBeatState
 					//
 				}
 				else // else just call bad notes
-					if (!Init.trueSettings.get('Ghost Tapping'))
+					if (!Init.trueSettings.get('Ghost Tapping') && !antimashshit)
 						missNoteCheck(true, key, boyfriend, true);
 				Conductor.songPosition = previousTime;
 			}
@@ -576,6 +643,11 @@ class PlayState extends MusicBeatState
 
 		if (health > 2)
 			health = 2;
+
+		if(demoshit.visible) { // kinda stole this from Psych Engine, sorry.
+			demoSine += 180 * elapsed;
+			demoshit.alpha = 1 - Math.sin((Math.PI * demoSine) / 180);
+		}
 
 		// dialogue checks
 		if (dialogueBox != null && dialogueBox.alive) {
@@ -956,12 +1028,16 @@ class PlayState extends MusicBeatState
 
 			// this can make it annoying if you're playing as these guys
 			if (character.curCharacter == 'evilori' || character.curCharacter == 'iro') {
-				if(health > 0.05) health -= 0.01;
+				if(health > 0.05) health -= 0.01; // should he be able to kill you? I mean he doesn't deal a lot of damage so he should.
 				FlxG.camera.shake(0.01, 0.1);
+				camHUD.shake(0.01, 0.1);
+			//	strumHUD.shake(0.01, 0.1);
 			}
 			if (character.curCharacter == 'shriek' || character.curCharacter == 'old-shriek') {
 				if(health > 0.32) health -= 0.02;
 				FlxG.camera.shake(0.01, 0.1);
+				camHUD.shake(0.01, 0.1);
+			//	strumHUD.shake(0.01, 0.05);
 			}
 
 			characterPlayAnimation(coolNote, character);
@@ -998,12 +1074,14 @@ class PlayState extends MusicBeatState
 						Timings.notesHit++;
 					if (Init.trueSettings.get('Hit Sounds'))
 						FlxG.sound.play(Paths.sound('hitsound'), 0.7);
-					health += 0.03;
+					antimashshit = true;
+					enablescore = true;
+					health += 0.02 * healthgain;
 					healthCall(Timings.judgementsMap.get(foundRating)[latedamage]);
 				} else if (coolNote.isSustainNote) {
 					// call updated accuracy stuffs
 					if (coolNote.parentNote != null) {
-						health += 0.01;
+						health += 0.015 * healthgain;
 						Timings.updateAccuracy(100, true, coolNote.parentNote.childrenNotes.length);
 						healthCall(100 / coolNote.parentNote.childrenNotes.length);
 					}
@@ -1022,6 +1100,7 @@ class PlayState extends MusicBeatState
 		{
 			var stringDirection:String = UIStaticArrow.getArrowFromNumber(direction);
 			health -= 0.05;
+			enablescore = true;
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
 		}
@@ -1037,7 +1116,7 @@ class PlayState extends MusicBeatState
 		var stringArrow:String = '';
 		var altString:String = '';
 
-		var baseString = 'sing' + UIStaticArrow.getArrowFromNumber(coolNote.noteData).toUpperCase();
+		var baseString = 'sing' + UIStaticArrow.getArrowFromNumber(coolNote.noteData).toUpperCase() + extraAnim;
 
 		// I tried doing xor and it didnt work lollll
 		if (coolNote.noteAlt > 0)
@@ -1492,6 +1571,30 @@ class PlayState extends MusicBeatState
 					bopbopbop = false;
 			}
 		}
+		if (curSong.toLowerCase() == 'old-spirit-tree') {
+			switch (curStep) {
+				case 108: // has to be set to that since if I do 112 it wouldn't start until another beat.
+					skipCountdown = false;
+					swagCounter = 0;
+					startSecondCountdown();
+				case 352 | 608:
+					extraAnim = 'alt';
+					bopbopbop = true;
+				case 380:
+					extraAnim = '';
+					bopbopbop = false;
+				case 640:
+					extraAnim = '';
+					bopbopbop = false;
+					if (Init.trueSettings.get('Flashing Lights'))
+					FlxG.camera.flash(FlxColor.WHITE, 1);
+					uiHUD.visible = false;
+					strumLines.visible = false;
+			}
+		}
+
+		stageBuild.stepStageUpdate(curStep, boyfriend, gf, dadOpponent);
+
 		///*
 		if (songMusic.time >= Conductor.songPosition + 20 || songMusic.time <= Conductor.songPosition - 20)
 			resyncVocals();
@@ -1540,6 +1643,13 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		if (curBeat % 2 == 0) {
+			bop = 1;
+		}
+		else {
+			bop = 2;
+		}
+
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
 		{
 			if (SONG.notes[Math.floor(curStep / 16)].changeBPM)
@@ -1547,6 +1657,8 @@ class PlayState extends MusicBeatState
 				Conductor.changeBPM(SONG.notes[Math.floor(curStep / 16)].bpm);
 			}
 		}
+
+		antimashshit = false;
 
 		uiHUD.beatHit();
 
@@ -1864,6 +1976,7 @@ class PlayState extends MusicBeatState
 					introAlts = introAssets.get(value);
 			}
 
+			if (!skipCountdown) {
 			switch (swagCounter)
 			{
 				case 0:
@@ -1919,7 +2032,7 @@ class PlayState extends MusicBeatState
 
 					go.screenCenter();
 					add(go);
-					FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+					FlxTween.tween(go, {y: 300, alpha: 0}, Conductor.crochet / 1000, {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
 						{
@@ -1927,14 +2040,107 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('introGo-' + assetModifier), 0.6);
+					FlxTween.tween(songinfonew, {y: -500}, 1, {ease: FlxEase.linear});
 
 					Conductor.songPosition = -(Conductor.crochet * 1);
 			}
+			}
 
 			swagCounter += 1;
+			if (swagCounter == 5 && skipCountdown) {
+				uiHUD.visible = true;
+				strumLines.visible = true;
+			}
 			// generateSong('fresh');
 		}, 5);
 	}
+
+	private function startSecondCountdown():Void
+		{
+			swagCounter = 0;
+			startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+			{
+				startedCountdown = true;
+	
+				var introAssets:Map<String, Array<String>> = new Map<String, Array<String>>();
+				introAssets.set('default', [
+					ForeverTools.returnSkinAsset('ready', assetModifier, changeableSkin, 'UI'),
+					ForeverTools.returnSkinAsset('set', assetModifier, changeableSkin, 'UI'),
+					ForeverTools.returnSkinAsset('go', assetModifier, changeableSkin, 'UI')
+				]);
+	
+				var introAlts:Array<String> = introAssets.get('default');
+				for (value in introAssets.keys())
+				{
+					if (value == PlayState.curStage)
+						introAlts = introAssets.get(value);
+				}
+	
+				switch (swagCounter)
+				{
+					case 0:
+						FlxG.sound.play(Paths.sound('intro3-' + assetModifier), 0.6);
+					case 1:
+						var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[0]));
+						ready.scrollFactor.set();
+						ready.updateHitbox();
+	
+						if (assetModifier == 'pixel')
+							ready.setGraphicSize(Std.int(ready.width * PlayState.daPixelZoom));
+	
+						ready.screenCenter();
+						add(ready);
+						FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+							ease: FlxEase.cubeInOut,
+							onComplete: function(twn:FlxTween)
+							{
+								ready.destroy();
+							}
+						});
+						FlxG.sound.play(Paths.sound('intro2-' + assetModifier), 0.6);
+					case 2:
+						var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[1]));
+						set.scrollFactor.set();
+	
+						if (assetModifier == 'pixel')
+							set.setGraphicSize(Std.int(set.width * PlayState.daPixelZoom));
+	
+						set.screenCenter();
+						add(set);
+						FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+							ease: FlxEase.cubeInOut,
+							onComplete: function(twn:FlxTween)
+							{
+								set.destroy();
+							}
+						});
+						FlxG.sound.play(Paths.sound('intro1-' + assetModifier), 0.6);
+					case 3:
+						var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(introAlts[2]));
+						go.scrollFactor.set();
+	
+						if (assetModifier == 'pixel')
+							go.setGraphicSize(Std.int(go.width * PlayState.daPixelZoom));
+	
+						go.updateHitbox();
+	
+						go.screenCenter();
+						add(go);
+						FlxTween.tween(go, {y: 300, alpha: 0}, Conductor.crochet / 1000, {
+							ease: FlxEase.cubeInOut,
+							onComplete: function(twn:FlxTween)
+							{
+								go.destroy();
+							}
+						});
+						FlxG.sound.play(Paths.sound('introGo-' + assetModifier), 0.6);
+						FlxTween.tween(songinfonew, {y: -500}, 1, {ease: FlxEase.linear});
+				}
+	
+				swagCounter += 1;
+				// generateSong('fresh');
+			}, 5);
+		}
 
 	override function add(Object:FlxBasic):FlxBasic
 	{

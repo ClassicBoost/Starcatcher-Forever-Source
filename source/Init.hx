@@ -92,6 +92,12 @@ class Init extends FlxState
 			'Whether to disable Anti-aliasing. Helps improve performance in FPS.',
 			NOT_FORCED
 		],
+		'Flashing Lights' => [
+			true,
+			Checkmark,
+			'Turn this off if you\'re sensitive to flashing lights!.',
+			NOT_FORCED
+		],
 		'No Camera Note Movement' => [
 			false,
 			Checkmark,
@@ -141,7 +147,7 @@ class Init extends FlxState
 			['StepMania', 'FNF']],
 		"UI Skin" => ['default', Selector, 'Choose a UI Skin for judgements, combo, etc.', NOT_FORCED, ''],
 		"Note Skin" => ['default', Selector, 'Choose a note skin.', NOT_FORCED, ''],
-		"Framerate Cap" => [120, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
+		"Framerate Cap" => [144, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		"Opaque Arrows" => [false, Checkmark, "Makes the arrows at the top of the screen opaque again.", NOT_FORCED],
 		"Opaque Holds" => [false, Checkmark, "Huh, why isnt the trail cut off?", NOT_FORCED],
 		'Ghost Tapping' => [
@@ -283,9 +289,9 @@ class Init extends FlxState
 
 		// lemme fix that for you
 		if (!Std.isOfType(trueSettings.get("Framerate Cap"), Int)
-			|| trueSettings.get("Framerate Cap") < 30
+			|| trueSettings.get("Framerate Cap") < 60
 			|| trueSettings.get("Framerate Cap") > 360)
-			trueSettings.set("Framerate Cap", 30);
+			trueSettings.set("Framerate Cap", 60);
 
 		if (!Std.isOfType(trueSettings.get("Stage Opacity"), Int)
 			|| trueSettings.get("Stage Opacity") < 0

@@ -44,7 +44,22 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	var upperBoppers:FNFSprite;
 	var gang:FNFSprite;
+	var skyboxnight:FNFSprite;
+	var cloudsnight:FNFSprite;
+	var wtfisthatlmaonight:FNFSprite;
+	var mountainsnight:FNFSprite;
+	var spirittreenight:FNFSprite;
+	var backgroundtreesnight:FNFSprite;
+	var grassnight:FNFSprite;
+	var clouds:FNFSprite;
+	var treeeeesnight:FNFSprite;
 	var santa:FNFSprite;
+
+	private var darkshitlol:Float = 0; // used for spirit tree
+	private var removelight:Float = 1;
+
+	public static var mood:String = '';
+	// ok so basically this isn't determin by character anymore, it's just by stage. Which would mean that if a evil character is the opponent in a regular stage it would still appear as normal.
 
 	var bgGirls:BackgroundGirls;
 
@@ -69,18 +84,23 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				case 'old-spirit-tree':
 					curStage = 'old-forest';
 					time = '';
+					mood = '';
 				case 'old-rtl':
 					curStage = 'old-forest';
 					time = '-dark';
+					mood = '';
 				case 'old-decay':
 					curStage = 'old-shrek';
 					time = '';
+					mood = 'evil';
 				case 'tutorial' | 'test':
 					curStage = 'stage';
 					time = '';
+					mood = '';
 				default:
 					curStage = 'void';
 					time = '';
+					mood = '';
 			}
 
 			PlayState.curStage = curStage;
@@ -101,7 +121,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				skybox.setGraphicSize(Std.int(skybox.width * 3));
 				skybox.scrollFactor.set(0.01, 0.01);
 
-				var clouds:FNFSprite = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/clouds' + time));
+				clouds = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/clouds' + time));
 				clouds.antialiasing = true;
 				clouds.setGraphicSize(Std.int(clouds.width * 2));
 				clouds.scrollFactor.set(0.05, 0.05); // should I lower this?
@@ -131,6 +151,42 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				grass.setGraphicSize(Std.int(grass.width * 2));
 				grass.scrollFactor.set(1, 1);
 
+				// these are used for the night cycle.
+				skyboxnight = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/bg-dark'));
+				skyboxnight.antialiasing = true;
+				skyboxnight.setGraphicSize(Std.int(skyboxnight.width * 3));
+				skyboxnight.scrollFactor.set(0.01, 0.01);
+
+				cloudsnight = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/clouds-dark'));
+				cloudsnight.antialiasing = true;
+				cloudsnight.setGraphicSize(Std.int(cloudsnight.width * 2));
+				cloudsnight.scrollFactor.set(0.05, 0.05); // should I lower this?
+
+				wtfisthatlmaonight = new FNFSprite(-100, -300).loadGraphic(Paths.image('backgrounds/old-nibel/thingyintheback-dark'));
+				wtfisthatlmaonight.antialiasing = true;
+				wtfisthatlmaonight.setGraphicSize(Std.int(wtfisthatlmaonight.width * 2));
+				wtfisthatlmaonight.scrollFactor.set(0.07, 0.07);
+
+				mountainsnight = new FNFSprite(-100, -300).loadGraphic(Paths.image('backgrounds/old-nibel/twomountains-dark'));
+				mountainsnight.antialiasing = true;
+				mountainsnight.setGraphicSize(Std.int(mountainsnight.width * 2));
+				mountainsnight.scrollFactor.set(0.07, 0.07);
+
+				spirittreenight = new FNFSprite(100, -150).loadGraphic(Paths.image('backgrounds/old-nibel/tree-dark'));
+				spirittreenight.antialiasing = true;
+				spirittreenight.setGraphicSize(Std.int(spirittreenight.width * 2));
+				spirittreenight.scrollFactor.set(0.3, 0.3);
+
+				backgroundtreesnight = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/twobushes-dark'));
+				backgroundtreesnight.antialiasing = true;
+				backgroundtreesnight.setGraphicSize(Std.int(backgroundtreesnight.width * 2));
+				backgroundtreesnight.scrollFactor.set(0.7, 0.7);
+
+				grassnight = new FNFSprite(0, 100).loadGraphic(Paths.image('backgrounds/old-nibel/gss-dark'));
+				grassnight.antialiasing = true;
+				grassnight.setGraphicSize(Std.int(grassnight.width * 2));
+				grassnight.scrollFactor.set(1, 1);
+
 				gang = new FNFSprite(200, 400);
 				gang.frames = Paths.getSparrowAtlas('backgrounds/old-nibel/thegang');
 				gang.animation.addByPrefix('bop', 'thegang idle0', 24, false);
@@ -144,20 +200,45 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				treeeees.setGraphicSize(Std.int(treeeees.width * 2));
 				treeeees.scrollFactor.set(1.2, 1.2);
 
+				treeeeesnight = new FNFSprite(100, 300).loadGraphic(Paths.image('backgrounds/old-nibel/trees-dark'));
+				treeeeesnight.antialiasing = true;
+				treeeeesnight.setGraphicSize(Std.int(treeeeesnight.width * 2));
+				treeeeesnight.scrollFactor.set(1.2, 1.2);
+
 				// I know it would be better to put them in each line of code but this is easier where to add shit. Also I use lua lmao.
 				add(skybox);
+				add(skyboxnight);
 				if (!Init.trueSettings.get('Low Quality')) {
 				add(clouds);
+				add(cloudsnight);
 				add(wtfisthatlmao);
+				add(wtfisthatlmaonight);
 				add(mountains);
+				add(mountainsnight);
 				add(spirittree);
+				add(spirittreenight);
 				add(backgroundtrees);
+				add(backgroundtreesnight);
 				}
 				add(grass);
+				add(grassnight);
 				if (!Init.trueSettings.get('Low Quality')) {
 				add(gang);
 				add(treeeees);
+				add(treeeeesnight);
 				}
+
+				clouds.alpha = 1;
+
+				skyboxnight.alpha = 0;
+				cloudsnight.alpha = 0;
+				wtfisthatlmaonight.alpha = 0;
+				mountainsnight.alpha = 0;
+				backgroundtreesnight.alpha = 0;
+				spirittreenight.alpha = 0;
+				grassnight.alpha = 0;
+				grassnight.alpha = 0;
+				treeeeesnight.alpha = 0;
 
 			case 'old-shrek':
 				PlayState.defaultCamZoom = 0.45;
@@ -347,6 +428,26 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	var trainCooldown:Int = 0;
 	var startedMoving:Bool = false;
 
+	public function stepStageUpdate(curStep:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character) {
+		switch (PlayState.curStage) {
+			case 'old-forest':
+				if (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()) == 'old-spirit-tree') { // just so it doesn't affect other stages.
+				darkshitlol += 0.0015; // how much lag does this cause?
+				removelight -= 0.0015; // clouds
+
+				skyboxnight.alpha = darkshitlol;
+				clouds.alpha = removelight;
+				cloudsnight.alpha = darkshitlol;
+				wtfisthatlmaonight.alpha = darkshitlol;
+				mountainsnight.alpha = darkshitlol;
+				backgroundtreesnight.alpha = darkshitlol;
+				spirittreenight.alpha = darkshitlol;
+				grassnight.alpha = darkshitlol;
+				treeeeesnight.alpha = darkshitlol;
+				}
+		}
+	}
+
 	public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
 	{
 		// trace('update backgrounds');
@@ -360,7 +461,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				});
 			case 'old-forest':
 				gang.animation.play('bop', true);
-
 			case 'school':
 				bgGirls.dance();
 

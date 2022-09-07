@@ -20,6 +20,7 @@ class HealthIcon extends FlxSprite
 		updateIcon(char, isPlayer);
 	}
 
+	private var iconOffsets:Array<Float> = [0, 0];
 	public function updateIcon(char:String = 'bf', isPlayer:Bool = false)
 	{
 		var trimmedCharacter:String = char;
@@ -46,6 +47,13 @@ class HealthIcon extends FlxSprite
 		animation.play('icon');
 		scrollFactor.set();
 	}
+
+	override function updateHitbox()
+		{
+			super.updateHitbox();
+			offset.x = iconOffsets[0];
+			offset.y = iconOffsets[1];
+		}
 
 	override function update(elapsed:Float)
 	{

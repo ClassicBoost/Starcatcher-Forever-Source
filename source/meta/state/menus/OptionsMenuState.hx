@@ -103,6 +103,7 @@ class OptionsMenuState extends MusicBeatState
 					['', null],
 					['Filter', getFromOption],
 					['Low Quality', getFromOption],
+					['Flashing Lights', getFromOption],
 					['Disable Antialiasing', getFromOption],
 					["Stage Opacity", getFromOption],
 					["Opacity Type", getFromOption],
@@ -468,7 +469,7 @@ class OptionsMenuState extends MusicBeatState
 			// bro I dont even know if the engine works in html5 why am I even doing this
 			// lazily hardcoded fps cap
 			var originalFPS = Init.trueSettings.get(activeSubgroup.members[curSelection].text);
-			var increase = 15 * updateBy;
+			var increase = 4 * updateBy;
 			if (originalFPS + increase < 30)
 				increase = 0;
 			// high fps cap
