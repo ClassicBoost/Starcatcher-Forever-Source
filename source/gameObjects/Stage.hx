@@ -40,26 +40,11 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 	var fastCar:FNFSprite;
 
-	private var time:String = '';
-
 	var upperBoppers:FNFSprite;
-	var gang:FNFSprite;
-	var skyboxnight:FNFSprite;
-	var cloudsnight:FNFSprite;
-	var wtfisthatlmaonight:FNFSprite;
-	var mountainsnight:FNFSprite;
-	var spirittreenight:FNFSprite;
-	var backgroundtreesnight:FNFSprite;
-	var grassnight:FNFSprite;
-	var clouds:FNFSprite;
-	var treeeeesnight:FNFSprite;
+	var bottomBoppers:FNFSprite;
 	var santa:FNFSprite;
 
-	private var darkshitlol:Float = 0; // used for spirit tree
-	private var removelight:Float = 1;
-
-	public static var mood:String = '';
-	// ok so basically this isn't determin by character anymore, it's just by stage. Which would mean that if a evil character is the opponent in a regular stage it would still appear as normal.
+	public static var spacelol:FNFSprite;
 
 	var bgGirls:BackgroundGirls;
 
@@ -81,26 +66,22 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			// custom stage stuffs will come with forever charts
 			switch (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()))
 			{
-				case 'old-spirit-tree':
-					curStage = 'old-forest';
-					time = '';
-					mood = '';
-				case 'old-rtl':
-					curStage = 'old-forest';
-					time = '-dark';
-					mood = '';
-				case 'old-decay':
-					curStage = 'old-shrek';
-					time = '';
-					mood = 'evil';
-				case 'tutorial' | 'test':
-					curStage = 'stage';
-					time = '';
-					mood = '';
+				case 'spookeez' | 'south' | 'sugar-rush':
+					curStage = 'spooky';
+				case 'pico' | 'blammed' | 'philly-nice':
+					curStage = 'philly';
+				case 'mil' | 'satin' | 'high':
+					curStage = 'highway';
+				case 'cocoa' | 'eggnog':
+					curStage = 'mall';
+				case 'winter-horrorland':
+					curStage = 'mallEvil';
+				case 'senpai' | 'roses':
+					curStage = 'school';
+				case 'thorns':
+					curStage = 'schoolEvil';
 				default:
-					curStage = 'void';
-					time = '';
-					mood = '';
+					curStage = 'stage';
 			}
 
 			PlayState.curStage = curStage;
@@ -112,178 +93,263 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		//
 		switch (curStage)
 		{
-			case 'old-forest':
-				PlayState.defaultCamZoom = 0.6;
-				curStage = 'old-forest';
+			case 'spooky':
+				curStage = 'spooky';
+				// halloweenLevel = true;
 
-				var skybox:FNFSprite = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/bg' + time));
-				skybox.antialiasing = true;
-				skybox.setGraphicSize(Std.int(skybox.width * 3));
-				skybox.scrollFactor.set(0.01, 0.01);
+				var hallowTex = Paths.getSparrowAtlas('backgrounds/' + curStage + '/halloween_bg');
 
-				clouds = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/clouds' + time));
-				clouds.antialiasing = true;
-				clouds.setGraphicSize(Std.int(clouds.width * 2));
-				clouds.scrollFactor.set(0.05, 0.05); // should I lower this?
+				halloweenBG = new FNFSprite(-200, -100);
+				halloweenBG.frames = hallowTex;
+				halloweenBG.animation.addByPrefix('idle', 'halloweem bg0');
+				halloweenBG.animation.addByPrefix('lightning', 'halloweem bg lightning strike', 24, false);
+				halloweenBG.animation.play('idle');
+				halloweenBG.antialiasing = true;
+				add(halloweenBG);
 
-				var wtfisthatlmao:FNFSprite = new FNFSprite(-100, -300).loadGraphic(Paths.image('backgrounds/old-nibel/thingyintheback' + time));
-				wtfisthatlmao.antialiasing = true;
-				wtfisthatlmao.setGraphicSize(Std.int(wtfisthatlmao.width * 2));
-				wtfisthatlmao.scrollFactor.set(0.07, 0.07);
+				spacelol = new FNFSprite(0, 0).loadGraphic(Paths.image('backgrounds/' + curStage + '/Space'));
+				spacelol.antialiasing = true;
+				spacelol.scrollFactor.set(0.01, 0.01);
+				spacelol.setGraphicSize(Std.int(spacelol.width * 1));
+				spacelol.visible = false;
+				add(spacelol);
 
-				var mountains:FNFSprite = new FNFSprite(-100, -300).loadGraphic(Paths.image('backgrounds/old-nibel/twomountains' + time));
-				mountains.antialiasing = true;
-				mountains.setGraphicSize(Std.int(mountains.width * 2));
-				mountains.scrollFactor.set(0.07, 0.07);
+			// isHalloween = true;
+			case 'philly':
+				curStage = 'philly';
 
-				var spirittree:FNFSprite = new FNFSprite(100, -150).loadGraphic(Paths.image('backgrounds/old-nibel/tree' + time));
-				spirittree.antialiasing = true;
-				spirittree.setGraphicSize(Std.int(spirittree.width * 2));
-				spirittree.scrollFactor.set(0.3, 0.3);
+				var bg:FNFSprite = new FNFSprite(-100).loadGraphic(Paths.image('backgrounds/' + curStage + '/sky'));
+				bg.scrollFactor.set(0.01, 0.01);
+				add(bg);
 
-				var backgroundtrees:FNFSprite = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/twobushes' + time));
-				backgroundtrees.antialiasing = true;
-				backgroundtrees.setGraphicSize(Std.int(backgroundtrees.width * 2));
-				backgroundtrees.scrollFactor.set(0.7, 0.7);
-
-				var grass:FNFSprite = new FNFSprite(0, 100).loadGraphic(Paths.image('backgrounds/old-nibel/gss' + time));
-				grass.antialiasing = true;
-				grass.setGraphicSize(Std.int(grass.width * 2));
-				grass.scrollFactor.set(1, 1);
-
-				// these are used for the night cycle.
-				skyboxnight = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/bg-dark'));
-				skyboxnight.antialiasing = true;
-				skyboxnight.setGraphicSize(Std.int(skyboxnight.width * 3));
-				skyboxnight.scrollFactor.set(0.01, 0.01);
-
-				cloudsnight = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/clouds-dark'));
-				cloudsnight.antialiasing = true;
-				cloudsnight.setGraphicSize(Std.int(cloudsnight.width * 2));
-				cloudsnight.scrollFactor.set(0.05, 0.05); // should I lower this?
-
-				wtfisthatlmaonight = new FNFSprite(-100, -300).loadGraphic(Paths.image('backgrounds/old-nibel/thingyintheback-dark'));
-				wtfisthatlmaonight.antialiasing = true;
-				wtfisthatlmaonight.setGraphicSize(Std.int(wtfisthatlmaonight.width * 2));
-				wtfisthatlmaonight.scrollFactor.set(0.07, 0.07);
-
-				mountainsnight = new FNFSprite(-100, -300).loadGraphic(Paths.image('backgrounds/old-nibel/twomountains-dark'));
-				mountainsnight.antialiasing = true;
-				mountainsnight.setGraphicSize(Std.int(mountainsnight.width * 2));
-				mountainsnight.scrollFactor.set(0.07, 0.07);
-
-				spirittreenight = new FNFSprite(100, -150).loadGraphic(Paths.image('backgrounds/old-nibel/tree-dark'));
-				spirittreenight.antialiasing = true;
-				spirittreenight.setGraphicSize(Std.int(spirittreenight.width * 2));
-				spirittreenight.scrollFactor.set(0.3, 0.3);
-
-				backgroundtreesnight = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-nibel/twobushes-dark'));
-				backgroundtreesnight.antialiasing = true;
-				backgroundtreesnight.setGraphicSize(Std.int(backgroundtreesnight.width * 2));
-				backgroundtreesnight.scrollFactor.set(0.7, 0.7);
-
-				grassnight = new FNFSprite(0, 100).loadGraphic(Paths.image('backgrounds/old-nibel/gss-dark'));
-				grassnight.antialiasing = true;
-				grassnight.setGraphicSize(Std.int(grassnight.width * 2));
-				grassnight.scrollFactor.set(1, 1);
-
-				gang = new FNFSprite(200, 400);
-				gang.frames = Paths.getSparrowAtlas('backgrounds/old-nibel/thegang');
-				gang.animation.addByPrefix('bop', 'thegang idle0', 24, false);
-				gang.antialiasing = true;
-				gang.scrollFactor.set(0.9, 0.9);
-				gang.setGraphicSize(Std.int(gang.width * 1));
-				gang.updateHitbox();
-
-				var treeeees:FNFSprite = new FNFSprite(100, 300).loadGraphic(Paths.image('backgrounds/old-nibel/trees' + time));
-				treeeees.antialiasing = true;
-				treeeees.setGraphicSize(Std.int(treeeees.width * 2));
-				treeeees.scrollFactor.set(1.2, 1.2);
-
-				treeeeesnight = new FNFSprite(100, 300).loadGraphic(Paths.image('backgrounds/old-nibel/trees-dark'));
-				treeeeesnight.antialiasing = true;
-				treeeeesnight.setGraphicSize(Std.int(treeeeesnight.width * 2));
-				treeeeesnight.scrollFactor.set(1.2, 1.2);
-
-				// I know it would be better to put them in each line of code but this is easier where to add shit. Also I use lua lmao.
-				add(skybox);
-				add(skyboxnight);
-				if (!Init.trueSettings.get('Low Quality')) {
-				add(clouds);
-				add(cloudsnight);
-				add(wtfisthatlmao);
-				add(wtfisthatlmaonight);
-				add(mountains);
-				add(mountainsnight);
-				add(spirittree);
-				add(spirittreenight);
-				add(backgroundtrees);
-				add(backgroundtreesnight);
-				}
-				add(grass);
-				add(grassnight);
-				if (!Init.trueSettings.get('Low Quality')) {
-				add(gang);
-				add(treeeees);
-				add(treeeeesnight);
-				}
-
-				clouds.alpha = 1;
-
-				skyboxnight.alpha = 0;
-				cloudsnight.alpha = 0;
-				wtfisthatlmaonight.alpha = 0;
-				mountainsnight.alpha = 0;
-				backgroundtreesnight.alpha = 0;
-				spirittreenight.alpha = 0;
-				grassnight.alpha = 0;
-				grassnight.alpha = 0;
-				treeeeesnight.alpha = 0;
-
-			case 'old-shrek':
-				PlayState.defaultCamZoom = 0.45;
-				curStage = 'old-shrek';
-
-				var skybox:FNFSprite = new FNFSprite(0, -100).loadGraphic(Paths.image('backgrounds/old-niwen/withered sky'));
-				skybox.antialiasing = true;
-				skybox.setGraphicSize(Std.int(skybox.width * 5));
-				skybox.scrollFactor.set(0.01, 0.01);
-
-				var trees:FNFSprite = new FNFSprite(100, -1300).loadGraphic(Paths.image('backgrounds/old-niwen/backgroundtreeslol'));
-				trees.antialiasing = true;
-				trees.setGraphicSize(Std.int(trees.width * 4.5));
-				trees.scrollFactor.set(0.7, 0.7);
-
-				var fuckyouforest:FNFSprite = new FNFSprite(100, -1500).loadGraphic(Paths.image('backgrounds/old-niwen/dieforest'));
-				fuckyouforest.antialiasing = true;
-				fuckyouforest.setGraphicSize(Std.int(fuckyouforest.width * 4.5));
-				fuckyouforest.scrollFactor.set(0.9, 0.9);
-
-				var ground:FNFSprite = new FNFSprite(100, -1500).loadGraphic(Paths.image('backgrounds/old-niwen/gound'));
-				ground.antialiasing = true;
-				ground.setGraphicSize(Std.int(ground.width * 4.5));
-				ground.scrollFactor.set(1, 1);
-
-				var cliff:FNFSprite = new FNFSprite(-200, -1100).loadGraphic(Paths.image('backgrounds/old-niwen/cliff shit'));
-				cliff.antialiasing = true;
-				cliff.setGraphicSize(Std.int(cliff.width * 4.5));
-				cliff.scrollFactor.set(1, 1);
-
-				var sauce:FNFSprite = new FNFSprite(100, -1500).loadGraphic(Paths.image('backgrounds/old-niwen/extradip'));
-				sauce.antialiasing = true;
-				sauce.setGraphicSize(Std.int(sauce.width * 6));
-				sauce.scrollFactor.set(1.1, 1.1);
-
-				add(skybox);
-				if (!Init.trueSettings.get('Low Quality')) {
-				add(trees);
-				add(fuckyouforest);
-				}
-				add(ground);
-				add(cliff);
+				var city:FNFSprite = new FNFSprite(-10).loadGraphic(Paths.image('backgrounds/' + curStage + '/city'));
+				city.scrollFactor.set(0.3, 0.3);
+				city.setGraphicSize(Std.int(city.width * 0.85));
+				city.updateHitbox();
 				if (!Init.trueSettings.get('Low Quality'))
-				add(sauce);
-			case 'stage':
+				add(city);
+
+				phillyCityLights = new FlxTypedGroup<FNFSprite>();
+				if (!Init.trueSettings.get('Low Quality'))
+				add(phillyCityLights);
+
+				for (i in 0...5)
+				{
+					var light:FNFSprite = new FNFSprite(city.x).loadGraphic(Paths.image('backgrounds/' + curStage + '/win' + i));
+					light.scrollFactor.set(0.3, 0.3);
+					light.visible = false;
+					light.setGraphicSize(Std.int(light.width * 0.85));
+					light.updateHitbox();
+					light.antialiasing = true;
+					if (!Init.trueSettings.get('Low Quality'))
+					phillyCityLights.add(light);
+				}
+
+				var streetBehind:FNFSprite = new FNFSprite(-40, 50).loadGraphic(Paths.image('backgrounds/' + curStage + '/behindTrain'));
+				add(streetBehind);
+
+				phillyTrain = new FNFSprite(2000, 360).loadGraphic(Paths.image('backgrounds/' + curStage + '/train'));
+				if (!Init.trueSettings.get('Low Quality'))
+				add(phillyTrain);
+
+				trainSound = new FlxSound().loadEmbedded(Paths.sound('train_passes'));
+				FlxG.sound.list.add(trainSound);
+
+				// var cityLights:FNFSprite = new FNFSprite().loadGraphic(AssetPaths.win0.png);
+
+				var street:FNFSprite = new FNFSprite(-40, streetBehind.y).loadGraphic(Paths.image('backgrounds/' + curStage + '/street'));
+				add(street);
+			case 'highway':
+				curStage = 'highway';
+				PlayState.defaultCamZoom = 0.90;
+
+				var skyBG:FNFSprite = new FNFSprite(-120, -50).loadGraphic(Paths.image('backgrounds/' + curStage + '/limoSunset'));
+				skyBG.scrollFactor.set(0.001, 0.001);
+				add(skyBG);
+
+				var bgLimo:FNFSprite = new FNFSprite(-200, 480);
+				bgLimo.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/bgLimo');
+				bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
+				bgLimo.animation.play('drive');
+				bgLimo.scrollFactor.set(0.4, 0.4);
+				add(bgLimo);
+
+				grpLimoDancers = new FlxTypedGroup<BackgroundDancer>();
+				add(grpLimoDancers); // wouldn't matter, there isn't any
+
+				for (i in 0...5)
+				{
+					var dancer:BackgroundDancer = new BackgroundDancer((370 * i) + 130, bgLimo.y - 400);
+					dancer.scrollFactor.set(0.4, 0.4);
+					grpLimoDancers.add(dancer);
+				}
+
+				var overlayShit:FNFSprite = new FNFSprite(-500, -600).loadGraphic(Paths.image('backgrounds/' + curStage + '/limoOverlay'));
+				overlayShit.alpha = 0.5;
+				// add(overlayShit);
+
+				// var shaderBullshit = new BlendModeEffect(new OverlayShader(), FlxColor.RED);
+
+				// FlxG.camera.setFilters([new ShaderFilter(cast shaderBullshit.shader)]);
+
+				// overlayShit.shader = shaderBullshit;
+
+				var limoTex = Paths.getSparrowAtlas('backgrounds/' + curStage + '/limoDrive');
+
+				limo = new FNFSprite(-120, 550);
+				limo.frames = limoTex;
+				limo.animation.addByPrefix('drive', "Limo stage", 24);
+				limo.animation.play('drive');
+				limo.antialiasing = true;
+
+				fastCar = new FNFSprite(-300, 160).loadGraphic(Paths.image('backgrounds/' + curStage + '/fastCarLol'));
+			// loadArray.add(limo);
+			case 'mall':
+				curStage = 'mall';
+				PlayState.defaultCamZoom = 0.80;
+
+				var bg:FNFSprite = new FNFSprite(-1000, -500).loadGraphic(Paths.image('backgrounds/' + curStage + '/bgWalls'));
+				bg.antialiasing = true;
+				bg.scrollFactor.set(0.2, 0.2);
+				bg.active = false;
+				bg.setGraphicSize(Std.int(bg.width * 0.8));
+				bg.updateHitbox();
+				add(bg);
+
+				upperBoppers = new FNFSprite(-240, -90);
+				upperBoppers.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/upperBop');
+				upperBoppers.animation.addByPrefix('bop', "Upper Crowd Bob", 24, false);
+				upperBoppers.antialiasing = true;
+				upperBoppers.scrollFactor.set(0.33, 0.33);
+				upperBoppers.setGraphicSize(Std.int(upperBoppers.width * 0.85));
+				upperBoppers.updateHitbox();
+				add(upperBoppers);
+
+				var bgEscalator:FNFSprite = new FNFSprite(-1100, -600).loadGraphic(Paths.image('backgrounds/' + curStage + '/bgEscalator'));
+				bgEscalator.antialiasing = true;
+				bgEscalator.scrollFactor.set(0.3, 0.3);
+				bgEscalator.active = false;
+				bgEscalator.setGraphicSize(Std.int(bgEscalator.width * 0.9));
+				bgEscalator.updateHitbox();
+				add(bgEscalator);
+
+				var tree:FNFSprite = new FNFSprite(370, -250).loadGraphic(Paths.image('backgrounds/' + curStage + '/christmasTree'));
+				tree.antialiasing = true;
+				tree.scrollFactor.set(0.40, 0.40);
+				add(tree);
+
+				bottomBoppers = new FNFSprite(-300, 140);
+				bottomBoppers.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/bottomBop');
+				bottomBoppers.animation.addByPrefix('bop', 'Bottom Level Boppers', 24, false);
+				bottomBoppers.antialiasing = true;
+				bottomBoppers.scrollFactor.set(0.9, 0.9);
+				bottomBoppers.setGraphicSize(Std.int(bottomBoppers.width * 1));
+				bottomBoppers.updateHitbox();
+				add(bottomBoppers);
+
+				var fgSnow:FNFSprite = new FNFSprite(-600, 700).loadGraphic(Paths.image('backgrounds/' + curStage + '/fgSnow'));
+				fgSnow.active = false;
+				fgSnow.antialiasing = true;
+				add(fgSnow);
+
+				santa = new FNFSprite(-840, 150);
+				santa.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/santa');
+				santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
+				santa.antialiasing = true;
+				add(santa);
+			case 'mallEvil':
+				curStage = 'mallEvil';
+				var bg:FNFSprite = new FNFSprite(-400, -500).loadGraphic(Paths.image('backgrounds/mall/evilBG'));
+				bg.antialiasing = true;
+				bg.scrollFactor.set(0.2, 0.2);
+				bg.active = false;
+				bg.setGraphicSize(Std.int(bg.width * 0.8));
+				bg.updateHitbox();
+				add(bg);
+
+				var evilTree:FNFSprite = new FNFSprite(300, -300).loadGraphic(Paths.image('backgrounds/mall/evilTree'));
+				evilTree.antialiasing = true;
+				evilTree.scrollFactor.set(0.2, 0.2);
+				add(evilTree);
+
+				var evilSnow:FNFSprite = new FNFSprite(-200, 700).loadGraphic(Paths.image("backgrounds/mall/evilSnow"));
+				evilSnow.antialiasing = true;
+				add(evilSnow);
+			case 'school':
+				curStage = 'school';
+
+				// defaultCamZoom = 0.9;
+
+				var bgSky = new FNFSprite().loadGraphic(Paths.image('backgrounds/' + curStage + '/weebSky'));
+				bgSky.scrollFactor.set(0.1, 0.1);
+				add(bgSky);
+
+				var repositionShit = -200;
+
+				var bgSchool:FNFSprite = new FNFSprite(repositionShit, 0).loadGraphic(Paths.image('backgrounds/' + curStage + '/weebSchool'));
+				bgSchool.scrollFactor.set(0.6, 0.90);
+				add(bgSchool);
+
+				var bgStreet:FNFSprite = new FNFSprite(repositionShit).loadGraphic(Paths.image('backgrounds/' + curStage + '/weebStreet'));
+				bgStreet.scrollFactor.set(0.95, 0.95);
+				add(bgStreet);
+
+				var fgTrees:FNFSprite = new FNFSprite(repositionShit + 170, 130).loadGraphic(Paths.image('backgrounds/' + curStage + '/weebTreesBack'));
+				fgTrees.scrollFactor.set(0.9, 0.9);
+				add(fgTrees);
+
+				var bgTrees:FNFSprite = new FNFSprite(repositionShit - 380, -800);
+				var treetex = Paths.getPackerAtlas('backgrounds/' + curStage + '/weebTrees');
+				bgTrees.frames = treetex;
+				bgTrees.animation.add('treeLoop', [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], 12);
+				bgTrees.animation.play('treeLoop');
+				bgTrees.scrollFactor.set(0.85, 0.85);
+				add(bgTrees);
+
+				var treeLeaves:FNFSprite = new FNFSprite(repositionShit, -40);
+				treeLeaves.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/petals');
+				treeLeaves.animation.addByPrefix('leaves', 'PETALS ALL', 24, true);
+				treeLeaves.animation.play('leaves');
+				treeLeaves.scrollFactor.set(0.85, 0.85);
+				add(treeLeaves);
+
+				var widShit = Std.int(bgSky.width * 6);
+
+				bgSky.setGraphicSize(widShit);
+				bgSchool.setGraphicSize(widShit);
+				bgStreet.setGraphicSize(widShit);
+				bgTrees.setGraphicSize(Std.int(widShit * 1.4));
+				fgTrees.setGraphicSize(Std.int(widShit * 0.8));
+				treeLeaves.setGraphicSize(widShit);
+
+				fgTrees.updateHitbox();
+				bgSky.updateHitbox();
+				bgSchool.updateHitbox();
+				bgStreet.updateHitbox();
+				bgTrees.updateHitbox();
+				treeLeaves.updateHitbox();
+
+				bgGirls = new BackgroundGirls(-100, 190);
+				bgGirls.scrollFactor.set(0.9, 0.9);
+
+				if (PlayState.SONG.song.toLowerCase() == 'roses')
+					bgGirls.getScared();
+
+				bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
+				bgGirls.updateHitbox();
+				add(bgGirls);
+			case 'schoolEvil':
+				var posX = 400;
+				var posY = 200;
+				var bg:FNFSprite = new FNFSprite(posX, posY);
+				bg.frames = Paths.getSparrowAtlas('backgrounds/' + curStage + '/animatedEvilSchool');
+				bg.animation.addByPrefix('idle', 'background 2', 24);
+				bg.animation.play('idle');
+				bg.scrollFactor.set(0.8, 0.9);
+				bg.scale.set(6, 6);
+				add(bg);
+
+			default:
 				PlayState.defaultCamZoom = 0.9;
 				curStage = 'stage';
 				var bg:FNFSprite = new FNFSprite(-600, -200).loadGraphic(Paths.image('backgrounds/' + curStage + '/stageback'));
@@ -312,10 +378,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				stageCurtains.active = false;
 
 				// add to the final array
+				if (!Init.trueSettings.get('Low Quality'))
 				add(stageCurtains);
-			default:
-				PlayState.defaultCamZoom = 0.6;
-				curStage = 'void';
 		}
 	}
 
@@ -337,6 +401,13 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		}
 
 		return gfVersion;
+	}
+
+	public static function hidespacelol() {
+		spacelol.visible = false;
+	}
+	public static function showspacelol() {
+		spacelol.visible = true;
 	}
 
 	// get the dad's position
@@ -370,24 +441,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 		// REPOSITIONING PER STAGE
 		switch (curStage)
 		{
-			case 'old-forest':
-				boyfriend.x = 1110;
-				boyfriend.y = 720;
-
-				gf.x = 510;
-				gf.y = 420;
-
-				dad.x = 250;
-				dad.y = 550;
-			case 'old-shrek': // please laugh
-				boyfriend.x = 1410;
-				boyfriend.y = -500;
-
-				gf.x = 1810;
-				gf.y = -700;
-
-				dad.x = -700;
-				dad.y = -1200;
 			case 'highway':
 				boyfriend.y -= 220;
 				boyfriend.x += 260;
@@ -396,6 +449,12 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				boyfriend.x += 200;
 				dad.x -= 400;
 				dad.y += 20;
+
+			case 'philly':
+				boyfriend.x += 100;
+				boyfriend.y -= 30;
+				dad.x += 100;
+				gf.x += 100;
 
 			case 'mallEvil':
 				boyfriend.x += 320;
@@ -413,9 +472,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				boyfriend.y += 220;
 				gf.x += 180;
 				gf.y += 300;
-			case 'void':
-				dad.x -= 200;
-				gf.visible = false;
+
 		}
 	}
 
@@ -428,26 +485,6 @@ class Stage extends FlxTypedGroup<FlxBasic>
 	var trainCooldown:Int = 0;
 	var startedMoving:Bool = false;
 
-	public function stepStageUpdate(curStep:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character) {
-		switch (PlayState.curStage) {
-			case 'old-forest':
-				if (CoolUtil.spaceToDash(PlayState.SONG.song.toLowerCase()) == 'old-spirit-tree') { // just so it doesn't affect other stages.
-				darkshitlol += 0.0015; // how much lag does this cause?
-				removelight -= 0.0015; // clouds
-
-				skyboxnight.alpha = darkshitlol;
-				clouds.alpha = removelight;
-				cloudsnight.alpha = darkshitlol;
-				wtfisthatlmaonight.alpha = darkshitlol;
-				mountainsnight.alpha = darkshitlol;
-				backgroundtreesnight.alpha = darkshitlol;
-				spirittreenight.alpha = darkshitlol;
-				grassnight.alpha = darkshitlol;
-				treeeeesnight.alpha = darkshitlol;
-				}
-		}
-	}
-
 	public function stageUpdate(curBeat:Int, boyfriend:Boyfriend, gf:Character, dadOpponent:Character)
 	{
 		// trace('update backgrounds');
@@ -459,8 +496,11 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				{
 					dancer.dance();
 				});
-			case 'old-forest':
-				gang.animation.play('bop', true);
+			case 'mall':
+				upperBoppers.animation.play('bop', true);
+				bottomBoppers.animation.play('bop', true);
+				santa.animation.play('idle', true);
+
 			case 'school':
 				bgGirls.dance();
 

@@ -65,6 +65,12 @@ class Init extends FlxState
 			'Whether to reduce movements, like icons bouncing or beat zooms in gameplay.',
 			NOT_FORCED
 		],
+		'Icon Turn' => [
+			false,
+			Checkmark,
+			'When enabled, the icons will turn on beat.',
+			NOT_FORCED
+		],
 		'Stage Opacity' => [
 			Checkmark,
 			Selector,
@@ -150,11 +156,12 @@ class Init extends FlxState
 		"Framerate Cap" => [144, Selector, 'Define your maximum FPS.', NOT_FORCED, ['']],
 		"Opaque Arrows" => [false, Checkmark, "Makes the arrows at the top of the screen opaque again.", NOT_FORCED],
 		"Opaque Holds" => [false, Checkmark, "Huh, why isnt the trail cut off?", NOT_FORCED],
-		'Ghost Tapping' => [
-			false,
-			Checkmark,
-			"Enables Ghost Tapping, allowing you to press inputs without missing.",
-			NOT_FORCED
+		'Input System' => [
+			'chad',
+			Selector,
+			"If virgin mode is selected, you can press inputs without missing.",
+			NOT_FORCED,
+			['chad', 'Virgin']
 		],
 		'Centered Notefield' => [false, Checkmark, "Center the notes, disables the enemy's notes."],
 		"Custom Titlescreen" => [

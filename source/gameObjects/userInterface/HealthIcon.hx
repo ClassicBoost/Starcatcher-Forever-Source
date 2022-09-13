@@ -28,7 +28,7 @@ class HealthIcon extends FlxSprite
 			trimmedCharacter = trimmedCharacter.substring(0, trimmedCharacter.indexOf('-'));
 
 		var iconPath = char;
-		while (!FileSystem.exists(Paths.getPath('images/icons/icon-' + iconPath + '.png', IMAGE))) {
+		while (!FileSystem.exists(Paths.getPath('images/characters/icons/icon-' + iconPath + '.png', IMAGE))) {
 			if (iconPath != trimmedCharacter)
 				iconPath = trimmedCharacter;
 			else
@@ -37,7 +37,7 @@ class HealthIcon extends FlxSprite
 		}
 
 		antialiasing = true;
-		var iconGraphic:FlxGraphic = Paths.image('icons/icon-' + iconPath);
+		var iconGraphic:FlxGraphic = Paths.image('characters/icons/icon-' + iconPath);
 		loadGraphic(iconGraphic, true, Std.int(iconGraphic.width / 3), iconGraphic.height);
 
 		initialWidth = width;
@@ -47,13 +47,6 @@ class HealthIcon extends FlxSprite
 		animation.play('icon');
 		scrollFactor.set();
 	}
-
-	override function updateHitbox()
-		{
-			super.updateHitbox();
-			offset.x = iconOffsets[0];
-			offset.y = iconOffsets[1];
-		}
 
 	override function update(elapsed:Float)
 	{

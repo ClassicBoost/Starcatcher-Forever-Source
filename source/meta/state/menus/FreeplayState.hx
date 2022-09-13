@@ -283,7 +283,7 @@ class FreeplayState extends MusicBeatState
 
 		intendedScore = Highscore.getScore(songs[curSelected].songName, curDifficulty);
 
-		diffText.text = '< ' + existingDifficulties[curSelected][curDifficulty] + ' >';
+		diffText.text = '';
 		lastDifficulty = existingDifficulties[curSelected][curDifficulty];
 	}
 

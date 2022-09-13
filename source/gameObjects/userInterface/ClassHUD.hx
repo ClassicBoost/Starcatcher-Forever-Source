@@ -12,6 +12,8 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
+import flash.display.BitmapData;
+import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
@@ -36,6 +38,9 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
 	private var oriHPBG:FlxSprite;
+//	private var oriHPBG:FlxSprite;
+
+	private var hpBGSine:Float = 0;
 
 	private var SONG = PlayState.SONG;
 	public var iconP1:HealthIcon;
@@ -58,8 +63,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		if (Init.trueSettings.get('Downscroll'))
 			barY = 64;
 
-		// forgot this has to go behind everything.
-		oriHPBG = new FlxSprite(210,0).loadGraphic(Paths.image('UI/oristuff/healthbg' + Stage.mood)); // should I remake the background image? or just keep the v4.5 one?
+		oriHPBG = new FlxSprite(210,0).loadGraphic(Paths.image('UI/oristuff/healthbg'));
 		if (!Init.trueSettings.get('Downscroll')) oriHPBG.y = 554;
 		else oriHPBG.y = 3;	
 		oriHPBG.scrollFactor.set();
@@ -96,7 +100,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		// small info bar, kinda like the KE watermark
 		// based on scoretxt which I will set up as well
 		var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
-		var engineDisplay:String = "Ori Engine v1.0 (FE v" + Main.gameVersion + ")";
+		var engineDisplay:String = "Ori Engine v" + Main.oriVersion + " (FE v" + Main.gameVersion + ")";
 		var engineBar:FlxText = new FlxText(0, FlxG.height - 30, 0, engineDisplay, 16);
 		engineBar.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		engineBar.updateHitbox();
@@ -144,25 +148,17 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		// pain, this is like the 7th attempt
 		healthBar.percent = (PlayState.health * 50);
 
-	/*	var iconLerp = 0.5;
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.initialWidth, iconP1.width, iconLerp)));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.initialWidth, iconP2.width, iconLerp)));
+	//	var iconLerp = 0.5;
+	//	iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.initialWidth, iconP1.width, iconLerp)));
+	//	iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.initialWidth, iconP2.width, iconLerp)));
 
 		iconP1.updateHitbox();
-		iconP2.updateHitbox();*/
-
-		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP1.scale.set(mult, mult);
-		iconP1.updateHitbox();
-
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP2.scale.set(mult, mult);
 		iconP2.updateHitbox();
 
 		var iconOffset:Int = 26;
 
-		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
-		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
 
 		if (PlayState.health <= 0.4) {
 			iconP1.animation.curAnim.curFrame = 1;
@@ -182,10 +178,10 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	private function tweenIcons():Void
 		{
-			iconP1.scale.set(1.45, 1.45);
+			iconP1.scale.set(1.3, 1.3);
 			FlxTween.tween(iconP1, {"scale.x": 1, "scale.y": 1}, Conductor.stepCrochet / 500, {ease: FlxEase.cubeOut});
 			
-			iconP2.scale.set(1.45, 1.45);
+			iconP2.scale.set(1.3, 1.3);
 			FlxTween.tween(iconP2, {"scale.x": 1, "scale.y": 1}, Conductor.stepCrochet / 500, {ease: FlxEase.cubeOut});
 		}
 
@@ -237,22 +233,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	{
 		if (!Init.trueSettings.get('Reduced Movements'))
 		{
-		//	tweenIcons();
-		iconP1.scale.set(1.2, 1.2);
-		iconP2.scale.set(1.2, 1.2);
-
-		if (PlayState.bop == 1) {
-			if (PlayState.health >= 0.4)
-			FlxTween.angle(iconP1, -15, 0, Conductor.crochet / 1300 * PlayState.gfSpeed, {ease: FlxEase.quadOut});
-			if (PlayState.health <= 1.6)
-			FlxTween.angle(iconP2, 15, 0, Conductor.crochet / 1300 * PlayState.gfSpeed, {ease: FlxEase.quadOut});
-		}
-		else {
-			if (PlayState.health >= 0.4)
-			FlxTween.angle(iconP1, 15, 0, Conductor.crochet / 1300 * PlayState.gfSpeed, {ease: FlxEase.quadOut});
-			if (PlayState.health <= 1.6)
-			FlxTween.angle(iconP2, -15, 0, Conductor.crochet / 1300 * PlayState.gfSpeed, {ease: FlxEase.quadOut});
-		}
+		tweenIcons();
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();

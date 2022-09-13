@@ -65,6 +65,8 @@ class StoryMenuState extends MusicBeatState
 		// freeaaaky
 		ForeverTools.resetMenuMusic();
 
+		curDifficulty = 1;
+
 		persistentUpdate = persistentDraw = true;
 
 		scoreText = new FlxText(10, 10, 0, "SCORE: 49324858", 36);
@@ -81,7 +83,7 @@ class StoryMenuState extends MusicBeatState
 		rankText.screenCenter(X);
 
 		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
-		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFFF9CF51);
+		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFF516DF7);
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
@@ -156,7 +158,7 @@ class StoryMenuState extends MusicBeatState
 		leftArrow.animation.addByPrefix('idle', "arrow left");
 		leftArrow.animation.addByPrefix('press', "arrow push left");
 		leftArrow.animation.play('idle');
-		difficultySelectors.add(leftArrow);
+	//	difficultySelectors.add(leftArrow);
 
 		sprDifficulty = new FlxSprite(leftArrow.x + 130, leftArrow.y);
 		sprDifficulty.frames = ui_tex;
@@ -165,14 +167,14 @@ class StoryMenuState extends MusicBeatState
 		sprDifficulty.animation.play('easy');
 		changeDifficulty();
 
-		difficultySelectors.add(sprDifficulty);
+	//	difficultySelectors.add(sprDifficulty);
 
 		rightArrow = new FlxSprite(sprDifficulty.x + sprDifficulty.width + 50, leftArrow.y);
 		rightArrow.frames = ui_tex;
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
 		rightArrow.animation.play('idle');
-		difficultySelectors.add(rightArrow);
+	//	difficultySelectors.add(rightArrow);
 
 		trace("Line 150");
 
@@ -231,11 +233,6 @@ class StoryMenuState extends MusicBeatState
 					leftArrow.animation.play('press');
 				else
 					leftArrow.animation.play('idle');
-
-				if (controls.UI_RIGHT_P)
-					changeDifficulty(1);
-				if (controls.UI_LEFT_P)
-					changeDifficulty(-1);
 			}
 
 			if (controls.ACCEPT)

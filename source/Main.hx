@@ -72,9 +72,10 @@ class Main extends Sprite
 	public static var framerate:Int = 144; // How many frames per second the game should run at.
 
 	public static var gameVersion:String = '0.3';
+	public static var oriVersion:String = '1.0';
 
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
-	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
+	var skipSplash:Bool = false; // Whether to skip the flixel splash screen that appears in release mode.
 	var infoCounter:InfoHud; // initialize the heads up display that shows information before creating it.
 
 	// heres gameweeks set up!
@@ -89,10 +90,28 @@ class Main extends Sprite
 	public static var gameWeeks:Array<Dynamic> = [
 		[['Tutorial'], ['gf'], [FlxColor.fromRGB(129, 100, 223)], 'Funky Beginnings'],
 		[
-			['Old-Spirit-Tree', 'Old-RTL', 'Old-Decay'],
-			['old-ori', 'old-ori', 'old-shriek'],
-			[FlxColor.fromRGB(255, 255, 255)],
-			'funny'
+			['Bopeebo', 'Fresh', 'Dadbattle'],
+			['dad', 'dad', 'dad'],
+			[FlxColor.fromRGB(129, 100, 223)],
+			'vs. DADDY DEAREST'
+		],
+		[
+			['Spookeez', 'South', 'Sugar-Rush'],
+			['spooky', 'spooky', 'spooky'],
+			[FlxColor.fromRGB(30, 45, 60)],
+			'Spooky Month'
+		],
+		[
+			['Pico', 'Philly-Nice', 'Blammed'],
+			['pico'],
+			[FlxColor.fromRGB(111, 19, 60)],
+			'vs. Pico'
+		],
+		[
+			['Satin', 'High', 'Mil'],
+			['mom'],
+			[FlxColor.fromRGB(203, 113, 170)],
+			'MOMMY MUST MURDER'
 		],
 	];
 

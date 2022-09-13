@@ -45,6 +45,8 @@ class OptionsMenuState extends MusicBeatState
 
 		// NOTE : Make sure to check Init.hx if you are trying to add options.
 
+		FlxG.sound.playMusic(Paths.music('breakfast'), 0.5);
+
 		#if !html5
 		Discord.changePresence('OPTIONS MENU', 'Main Menu');
 		#end
@@ -64,7 +66,7 @@ class OptionsMenuState extends MusicBeatState
 					['', null],
 					['Downscroll', getFromOption],
 					['Centered Notefield', getFromOption],
-					['Ghost Tapping', getFromOption],
+					['Input System', getFromOption],
 					['Display Accuracy', getFromOption],
 					['Skip Text', getFromOption],
 					['', null],
@@ -126,7 +128,7 @@ class OptionsMenuState extends MusicBeatState
 		bg.setGraphicSize(Std.int(bg.width * 1.1));
 		bg.updateHitbox();
 		bg.screenCenter();
-		bg.color = 0xCE64DF;
+		bg.color = 0x753AFF;
 		bg.antialiasing = true;
 		add(bg);
 
@@ -306,8 +308,10 @@ class OptionsMenuState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			if (curCategory != 'main')
 				loadSubgroup('main');
-			else
+			else {
 				Main.switchState(this, new MainMenuState());
+				FlxG.sound.playMusic(Paths.music('freakyMenu'),0.7);
+			}
 		}
 	}
 
@@ -585,6 +589,7 @@ class OptionsMenuState extends MusicBeatState
 			{
 				Main.switchState(this, new MainMenuState());
 				lockedMovement = false;
+				FlxG.sound.playMusic(Paths.music('freakyMenu'),0.7);
 			});
 		}
 		//

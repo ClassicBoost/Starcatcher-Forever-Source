@@ -306,25 +306,35 @@ class PlayState extends MusicBeatState
 		boyfriend.dance();
 
 		// I know there is an easier way but I'm too lazy
-		if (SONG.player2 == 'bf') {
+		if (SONG.player2 == 'bf' || SONG.player2 == 'bf-car') {
 			dadcolor1 = 49;
 			dadcolor2 = 176;
 			dadcolor3 = 209;
 		}
-		else if (SONG.player2 == 'ori' || SONG.player2 == 'old-ori') {
-			dadcolor1 = 255;
-			dadcolor2 = 255;
+		else if (SONG.player2 == 'gf') {
+			dadcolor1 = 159;
+			dadcolor2 = 0;
+			dadcolor3 = 74;
+		}
+		else if (SONG.player2 == 'dad') {
+			dadcolor1 = 171;
+			dadcolor2 = 100;
+			dadcolor3 = 202;
+		}
+		else if (SONG.player2 == 'spooky') {
+			dadcolor1 = 102;
+			dadcolor2 = 153;
 			dadcolor3 = 255;
 		}
-		else if (SONG.player2 == 'evilori' || SONG.player2 == 'iro' || SONG.player2 == 'shriek') {
-			dadcolor1 = 0;
-			dadcolor2 = 0;
-			dadcolor3 = 0;
+		else if (SONG.player2 == 'pico') {
+			dadcolor1 = 179;
+			dadcolor2 = 211;
+			dadcolor3 = 83;
 		}
-		else if (SONG.player2 == 'old-shriek') {
-			dadcolor1 = 70;
-			dadcolor2 = 65;
-			dadcolor3 = 105;
+		else if (SONG.player2 == 'mom-car' || SONG.player2 == 'mom') {
+			dadcolor1 = 211;
+			dadcolor2 = 83;
+			dadcolor3 = 138;
 		}
 		else {
 			dadcolor1 = 255;
@@ -332,7 +342,7 @@ class PlayState extends MusicBeatState
 			dadcolor3 = 0;
 		}
 
-		if (SONG.player1 == 'bf') {
+		if (SONG.player1 == 'bf' || SONG.player1 == 'bf-car') {
 			bfcolor1 = 49;
 			bfcolor2 = 176;
 			bfcolor3 = 209;
@@ -389,6 +399,11 @@ class PlayState extends MusicBeatState
 		startingSong = true;
 		startedCountdown = true;
 
+		
+		uiHUD = new ClassHUD();
+		add(uiHUD);
+		uiHUD.cameras = [camHUD];
+
 		//
 		var placement = (FlxG.width / 2);
 		dadStrums = new Strumline(placement - (FlxG.width / 4), this, dadOpponent, false, true, false, 4, Init.trueSettings.get('Downscroll'));
@@ -416,11 +431,6 @@ class PlayState extends MusicBeatState
 		}
 		add(strumLines);
 
-		uiHUD = new ClassHUD();
-		add(uiHUD);
-		uiHUD.cameras = [camHUD];
-		//
-
 		var demoDisplay:String = "This mod is currently in a demo state, this is not final.";
 
 		demoshit = new FlxText(0, FlxG.height - 30, 0, demoDisplay, 20);
@@ -433,10 +443,8 @@ class PlayState extends MusicBeatState
 
 		switch (curSong.toLowerCase())
 		{
-			case 'old-spirit-tree' | 'old-rtl' | 'old-decay':
-				composerslol = 'Composer(s): Rae';
 			default:
-				composerslol = 'Composer(s):'; // placeholder
+				composerslol = 'Composer(s): Stardust Tunes'; // placeholder
 		}
 		songinfonew = new FlxText(0, 0, CoolUtil.dashToSpace(PlayState.SONG.song) + '\n' + composerslol + '\n', 12);
 		songinfonew.setFormat(Paths.font("vcr.ttf"), 40, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -447,19 +455,11 @@ class PlayState extends MusicBeatState
 
 		songinfonew.cameras = [camHUD];
 
-		if (curSong.toLowerCase() == 'old-spirit-tree')
-			skipCountdown = true;
-		else
-			skipCountdown = false;
+		if (curSong.toLowerCase() == 'tutorial' || curSong.toLowerCase() == 'spookeez' || curSong.toLowerCase() == 'south' || curSong.toLowerCase() == 'blammed') skipCountdown = true;
+		else skipCountdown = false;
 
-		if (skipCountdown) {
-		uiHUD.visible = false;
-		strumLines.visible = false;
-		}
-		else { // incase if the HUD doesn't appear again after disappearing.
 		uiHUD.visible = true;
 		strumLines.visible = true;
-		}
 
 		// create a hud over the hud camera for dialogue
 		dialogueHUD = new FlxCamera();
@@ -587,7 +587,7 @@ class PlayState extends MusicBeatState
 					//
 				}
 				else // else just call bad notes
-					if (!Init.trueSettings.get('Ghost Tapping') && !antimashshit)
+					if (Init.trueSettings.get('Input System') != 'Virgin' && !antimashshit)
 						missNoteCheck(true, key, boyfriend, true);
 				Conductor.songPosition = previousTime;
 			}
@@ -946,7 +946,7 @@ class PlayState extends MusicBeatState
 									note.tooLate = true;
 								
 								vocals.volume = 0;
-								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+								missNoteCheck((Init.trueSettings.get('Input System') == 'Virgin') ? true : false, daNote.noteData, boyfriend, true);
 								// ambiguous name
 								Timings.updateAccuracy(0);
 							}
@@ -966,7 +966,7 @@ class PlayState extends MusicBeatState
 										}
 										if (!breakFromLate)
 										{
-											missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+											missNoteCheck((Init.trueSettings.get('Input System') == 'Virgin') ? true : false, daNote.noteData, boyfriend, true);
 											for (note in parentNote.childrenNotes)
 												note.tooLate = true;
 										}
@@ -1026,23 +1026,15 @@ class PlayState extends MusicBeatState
 			coolNote.wasGoodHit = true;
 			vocals.volume = 1;
 
-			// this can make it annoying if you're playing as these guys
-			if (character.curCharacter == 'evilori' || character.curCharacter == 'iro') {
-				if(health > 0.05) health -= 0.01; // should he be able to kill you? I mean he doesn't deal a lot of damage so he should.
-				FlxG.camera.shake(0.01, 0.1);
-				camHUD.shake(0.01, 0.1);
-			//	strumHUD.shake(0.01, 0.1);
-			}
-			if (character.curCharacter == 'shriek' || character.curCharacter == 'old-shriek') {
-				if(health > 0.32) health -= 0.02;
-				FlxG.camera.shake(0.01, 0.1);
-				camHUD.shake(0.01, 0.1);
-			//	strumHUD.shake(0.01, 0.05);
-			}
-
 			characterPlayAnimation(coolNote, character);
 			if (characterStrums.receptors.members[coolNote.noteData] != null)
 				characterStrums.receptors.members[coolNote.noteData].playAnim('confirm', true);
+
+			if (character.curCharacter == 'spooky' && curSong.toLowerCase() == 'sugar-rush' && health >= 1)
+				health -= 0.025;
+
+			if (character.curCharacter == 'mom-car' && curSong.toLowerCase() == 'mil' && curStep >= 288)
+				health -= 0.015;
 
 			// special thanks to sam, they gave me the original system which kinda inspired my idea for this new one
 			if (canDisplayJudgement) {
@@ -1592,13 +1584,111 @@ class PlayState extends MusicBeatState
 					strumLines.visible = false;
 			}
 		}
-
-		stageBuild.stepStageUpdate(curStep, boyfriend, gf, dadOpponent);
+		if (curSong.toLowerCase() == 'tutorial') {
+			switch (curStep) {
+				case 44:
+					skipCountdown = false;
+					swagCounter = 0;
+					startSecondCountdown();
+			}
+		}
+		if (curSong.toLowerCase() == 'mil') {
+			switch (curStep) {
+				case 288:
+					bopbopbop = true;
+					health = 1;
+					if (Init.trueSettings.get('Flashing Lights'))
+					FlxG.camera.flash(FlxColor.WHITE, 1);
+					if(!Init.trueSettings.get('Reduced Movements')) {
+						FlxG.camera.shake(3, 0.1);
+						camHUD.shake(3, 0.1);
+					}
+					FlxG.sound.play(Paths.sound('meteorhit'), 0.7);
+				case 672,800:
+					bopbopbop = true;
+				case 544,784,928:
+					bopbopbop = false;
+			}
+		}
+		if (curSong.toLowerCase() == 'spookeez') {
+			switch (curStep) {
+				case 44:
+					startSecondCountdown();
+				case 1,960:
+					uiHUD.visible = false;
+					strumLines.visible = false;
+				case 64:
+					uiHUD.visible = true;
+					strumLines.visible = true;
+				case 128,192,384,448,704:
+					bopbopbop = true;
+				case 188,320,444,572,956:
+					bopbopbop = false;
+			}
+		}
+		if (curSong.toLowerCase() == 'blammed') {
+			switch (curStep) {
+				case 1,1024:
+					uiHUD.visible = false;
+					strumLines.visible = false;
+				case 128:
+					uiHUD.visible = true;
+					strumLines.visible = true;
+				case 112:
+					startSecondCountdown();
+			}
+		}
+		if (curSong.toLowerCase() == 'south') {
+			switch (curStep) {
+				case 104:
+					startSecondCountdown();
+				case 256,640:
+					if (Init.trueSettings.get('Flashing Lights'))
+						FlxG.camera.flash(FlxColor.WHITE, 1);
+					Stage.showspacelol();
+				case 512:
+					if (Init.trueSettings.get('Flashing Lights'))
+						FlxG.camera.flash(FlxColor.WHITE, 1);
+					Stage.hidespacelol();
+				case 772,780,788,796,804,812,820,836,844,852,860,868,876,884,892:
+					if (Init.trueSettings.get('Flashing Lights'))
+						FlxG.camera.flash(FlxColor.WHITE, 0.25);
+				case 896:
+					if (Init.trueSettings.get('Flashing Lights'))
+						FlxG.camera.flash(FlxColor.WHITE, 1);
+					Stage.hidespacelol();
+					uiHUD.visible = false;
+					strumLines.visible = false;
+			}
+		}
+		if (curSong.toLowerCase() == 'pico') {
+			switch (curStep) {
+				case 1:
+					uiHUD.visible = false;
+					strumLines.visible = false;
+				case 48,768:
+					uiHUD.visible = true;
+					strumLines.visible = true;
+				case 112,114,116,118,120,121,122,123,124,125,126,127,144,160,176,182,186,189,260:
+					forcebop();
+				case 128,320:
+					bopbopbop = true;
+				case 256,384:
+					bopbopbop = false;
+			}
+		}
 
 		///*
 		if (songMusic.time >= Conductor.songPosition + 20 || songMusic.time <= Conductor.songPosition - 20)
 			resyncVocals();
 		//*/
+	}
+
+	private function forcebop() {
+		FlxG.camera.zoom += 0.015;
+		camHUD.zoom += 0.05;
+		for (hud in strumHUD)
+			hud.zoom += 0.05;
 	}
 
 	private function charactersDance(curBeat:Int)
@@ -1627,7 +1717,7 @@ class PlayState extends MusicBeatState
 		if (bopbopbop == true) {
 			if ((curBeat % 1 == 0) && (!Init.trueSettings.get('Reduced Movements')))
 				{
-					FlxG.camera.zoom += 0.055;
+					FlxG.camera.zoom += 0.025;
 					camHUD.zoom += 0.05;
 					for (hud in strumHUD)
 						hud.zoom += 0.05;
@@ -2045,12 +2135,9 @@ class PlayState extends MusicBeatState
 					Conductor.songPosition = -(Conductor.crochet * 1);
 			}
 			}
+			else Conductor.songPosition = -(Conductor.crochet * 0);
 
 			swagCounter += 1;
-			if (swagCounter == 5 && skipCountdown) {
-				uiHUD.visible = true;
-				strumLines.visible = true;
-			}
 			// generateSong('fresh');
 		}, 5);
 	}
