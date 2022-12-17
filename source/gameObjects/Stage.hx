@@ -76,7 +76,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					curStage = 'mall';
 				case 'winter-horrorland':
 					curStage = 'mallEvil';
-				case 'senpai' | 'roses':
+				case 'astrophile' | 'roses':
 					curStage = 'school';
 				case 'thorns':
 					curStage = 'schoolEvil';
@@ -286,7 +286,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 				var repositionShit = -200;
 
-				var bgSchool:FNFSprite = new FNFSprite(repositionShit, 0).loadGraphic(Paths.image('backgrounds/' + curStage + '/weebSchool'));
+			/*	var bgSchool:FNFSprite = new FNFSprite(repositionShit, 0).loadGraphic(Paths.image('backgrounds/' + curStage + '/weebSchool'));
 				bgSchool.scrollFactor.set(0.6, 0.90);
 				add(bgSchool);
 
@@ -311,25 +311,25 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				treeLeaves.animation.addByPrefix('leaves', 'PETALS ALL', 24, true);
 				treeLeaves.animation.play('leaves');
 				treeLeaves.scrollFactor.set(0.85, 0.85);
-				add(treeLeaves);
+				add(treeLeaves);*/
 
 				var widShit = Std.int(bgSky.width * 6);
 
 				bgSky.setGraphicSize(widShit);
-				bgSchool.setGraphicSize(widShit);
-				bgStreet.setGraphicSize(widShit);
-				bgTrees.setGraphicSize(Std.int(widShit * 1.4));
-				fgTrees.setGraphicSize(Std.int(widShit * 0.8));
-				treeLeaves.setGraphicSize(widShit);
+			//	bgSchool.setGraphicSize(widShit);
+			//	bgStreet.setGraphicSize(widShit);
+			//	bgTrees.setGraphicSize(Std.int(widShit * 1.4));
+			//	fgTrees.setGraphicSize(Std.int(widShit * 0.8));
+			//	treeLeaves.setGraphicSize(widShit);
 
-				fgTrees.updateHitbox();
+			//	fgTrees.updateHitbox();
 				bgSky.updateHitbox();
-				bgSchool.updateHitbox();
-				bgStreet.updateHitbox();
-				bgTrees.updateHitbox();
-				treeLeaves.updateHitbox();
+			//	bgSchool.updateHitbox();
+			//	bgStreet.updateHitbox();
+			//	bgTrees.updateHitbox();
+			//	treeLeaves.updateHitbox();
 
-				bgGirls = new BackgroundGirls(-100, 190);
+			/*	bgGirls = new BackgroundGirls(-100, 190);
 				bgGirls.scrollFactor.set(0.9, 0.9);
 
 				if (PlayState.SONG.song.toLowerCase() == 'roses')
@@ -337,7 +337,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 				bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
 				bgGirls.updateHitbox();
-				add(bgGirls);
+				add(bgGirls);*/
 			case 'schoolEvil':
 				var posX = 400;
 				var posY = 200;
@@ -395,7 +395,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			case 'mall' | 'mallEvil':
 				gfVersion = 'gf-christmas';
 			case 'school':
-				gfVersion = 'gf-pixel';
+			//	gfVersion = 'gf-pixel';
 			case 'schoolEvil':
 				gfVersion = 'gf-pixel';
 		}
@@ -459,12 +459,21 @@ class Stage extends FlxTypedGroup<FlxBasic>
 			case 'mallEvil':
 				boyfriend.x += 320;
 			case 'school':
-				boyfriend.x += 200;
-				boyfriend.y += 220;
-				dad.x += 200;
-				dad.y += 580;
-				gf.x += 200;
-				gf.y += 320;
+			//	boyfriend.x += 200;
+			//	boyfriend.y += 220;
+			//	dad.x += 200;
+			//	dad.y += 580;
+			//	gf.x += 200;
+			//	gf.y += 320;
+
+				boyfriend.x = 200;
+				dad.x = 200;
+				boyfriend.y += 500;
+				dad.y += 500;
+
+				boyfriend.visible = false;
+				gf.visible = false;
+				dad.visible = false;
 			case 'schoolEvil':
 				dad.x -= 150;
 				dad.y += 50;
@@ -501,8 +510,8 @@ class Stage extends FlxTypedGroup<FlxBasic>
 				bottomBoppers.animation.play('bop', true);
 				santa.animation.play('idle', true);
 
-			case 'school':
-				bgGirls.dance();
+		//	case 'school':
+		//		bgGirls.dance();
 
 			case 'philly':
 				if (!trainMoving)
@@ -577,6 +586,7 @@ class Stage extends FlxTypedGroup<FlxBasic>
 
 		if (startedMoving)
 		{
+			phillyTrain.visible = true;
 			phillyTrain.x -= 400;
 
 			if (phillyTrain.x < -2000 && !trainFinishing)
@@ -588,8 +598,10 @@ class Stage extends FlxTypedGroup<FlxBasic>
 					trainFinishing = true;
 			}
 
-			if (phillyTrain.x < -4000 && trainFinishing)
+			if (phillyTrain.x < -4000 && trainFinishing) {
 				trainReset(gf);
+				phillyTrain.visible = false;
+			}
 		}
 	}
 

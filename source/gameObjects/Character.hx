@@ -353,7 +353,7 @@ class Character extends FNFSprite
 				playAnim('idle');
 
 				flipX = true;
-			case 'bf-pixel':
+		/*	case 'bf-pixel':
 				frames = Paths.getSparrowAtlas('characters/Boyfriend/bfPixel');
 				animation.addByPrefix('idle', 'BF IDLE', 24, false);
 				animation.addByPrefix('singUP', 'BF UP NOTE', 24, false);
@@ -408,7 +408,7 @@ class Character extends FNFSprite
 				antialiasing = false;
 
 				characterData.camOffsetY = -330;
-				characterData.camOffsetX = -200;
+				characterData.camOffsetX = -200;*/
 			case 'senpai-angry':
 				frames = Paths.getSparrowAtlas('characters/senpai');
 				animation.addByPrefix('idle', 'Angry Senpai Idle', 24, false);

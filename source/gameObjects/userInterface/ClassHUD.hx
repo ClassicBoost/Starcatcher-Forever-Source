@@ -35,6 +35,9 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	var scoreLast:Float = -1;
 	var scoreDisplay:String;
 
+	var cornerMark:FlxText; // engine mark at the upper right corner
+	var centerMark:FlxText; // song display name and difficulty at the center
+
 	private var healthBarBG:FlxSprite;
 	private var healthBar:FlxBar;
 	private var oriHPBG:FlxSprite;
@@ -42,12 +45,22 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 
 	private var hpBGSine:Float = 0;
 
+	var demoshit:FlxText;
+
+	private var demoSine:Float = 0;
+
 	private var SONG = PlayState.SONG;
 	public var iconP1:HealthIcon;
 	public var iconP2:HealthIcon;
 	private var stupidHealth:Float = 0;
 
 	private var timingsMap:Map<String, FlxText> = [];
+
+	var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
+	var diffDisplay:String = CoolUtil.difficultyFromNumber(PlayState.storyDifficulty);
+	var engineDisplay:String = "AXOLOTL ENGINE v" + Main.oriVersion + " (FE v" + Main.gameVersion + ")";
+
+	private var choosenFont:String = 'vcr.ttf';
 
 	// eep
 	public function new()
@@ -68,6 +81,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		else oriHPBG.y = 3;	
 		oriHPBG.scrollFactor.set();
 		oriHPBG.antialiasing = true;
+		oriHPBG.alpha = 0.7;
 		add(oriHPBG);
 
 		healthBarBG = new FlxSprite(0,
@@ -92,26 +106,54 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		add(iconP2);
 
 		scoreBar = new FlxText(FlxG.width / 2, healthBarBG.y + 40, 0, scoreDisplay, 20);
-		scoreBar.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreBar.setFormat(Paths.font(choosenFont), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		scoreBar.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		updateScoreText();
 		scoreBar.scrollFactor.set();
 		add(scoreBar);
+
+		cornerMark = new FlxText(0, 0, 0, engineDisplay);
+		cornerMark.setFormat(Paths.font(choosenFont), 18, FlxColor.WHITE);
+		cornerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
+		add(cornerMark);
+		cornerMark.setPosition(FlxG.width - (cornerMark.width + 5), 5);
+		cornerMark.antialiasing = true;
+
+		centerMark = new FlxText(0, 0, 0, '- ${infoDisplay} -');
+		centerMark.setFormat(Paths.font(choosenFont), 24, FlxColor.WHITE);
+		centerMark.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
+		add(centerMark);
+		if (Init.trueSettings.get('Downscroll'))
+			centerMark.y = (FlxG.height - centerMark.height / 2) - 30;
+		else
+			centerMark.y = (FlxG.height / 24) - 10;
+		centerMark.screenCenter(X);
+		centerMark.antialiasing = true;
+
+		var demoDisplay:String = "This mod is currently in a demo state, this is not final.";
+
+		demoshit = new FlxText(0, FlxG.height - 20, 0, demoDisplay, 20);
+		demoshit.setFormat(Paths.font(choosenFont), 14, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		demoshit.scrollFactor.set();
+		demoshit.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
+		demoshit.screenCenter(X);
+		add(demoshit);
 
 		// small info bar, kinda like the KE watermark
 		// based on scoretxt which I will set up as well
 		var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
 		var engineDisplay:String = "Ori Engine v" + Main.oriVersion + " (FE v" + Main.gameVersion + ")";
 		var engineBar:FlxText = new FlxText(0, FlxG.height - 30, 0, engineDisplay, 16);
-		engineBar.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		engineBar.setFormat(Paths.font(choosenFont), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		engineBar.updateHitbox();
 		engineBar.x = FlxG.width - engineBar.width - 5;
 		engineBar.scrollFactor.set();
-		add(engineBar);
+	//	add(engineBar);
 
 		infoBar = new FlxText(5, FlxG.height - 30, 0, infoDisplay, 20);
-		infoBar.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		infoBar.setFormat(Paths.font(choosenFont), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoBar.scrollFactor.set();
-		add(infoBar);
+	//	add(infoBar);
 
 		// counter
 		if (Init.trueSettings.get('Counter') != 'None') {
@@ -127,7 +169,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 					'', counterTextSize);
 				if (!left)
 					textAsset.x -= textAsset.text.length * counterTextSize;
-				textAsset.setFormat(Paths.font("vcr.ttf"), counterTextSize, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				textAsset.setFormat(Paths.font(choosenFont), counterTextSize, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 				textAsset.scrollFactor.set();
 				timingsMap.set(judgementNameArray[i], textAsset);
 				add(textAsset);
@@ -152,15 +194,20 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 	//	iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.initialWidth, iconP1.width, iconLerp)));
 	//	iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.initialWidth, iconP2.width, iconLerp)));
 
-		iconP1.updateHitbox();
-		iconP2.updateHitbox();
+	//	iconP1.updateHitbox();
+	//	iconP2.updateHitbox();
+
+		if(demoshit.visible) { // kinda stole this from Psych Engine, sorry.
+			demoSine += 180 * elapsed;
+			demoshit.alpha = 1 - Math.sin((Math.PI * demoSine) / 180);
+		}
 
 		var iconOffset:Int = 26;
 
 		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
 		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
 
-		if (PlayState.health <= 0.4) {
+		if (PlayState.health <= 0.4 || PlayState.uhOh) {
 			iconP1.animation.curAnim.curFrame = 1;
 			iconP2.animation.curAnim.curFrame = 2;
 		}
@@ -174,7 +221,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		}
 	}
 
-	private final divider:String = ' - ';
+	private final divider:String = ' • ';
 
 	private function tweenIcons():Void
 		{
@@ -202,15 +249,12 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		var displayAccuracy:Bool = Init.trueSettings.get('Display Accuracy');
 		if (displayAccuracy)
 		{
-			if (PlayState.enablescore) {
 			if (PlayState.misses == 0)
 			scoreBar.text += divider + 'Accuracy: ' + Std.string(Math.floor(Timings.getAccuracy() * 100) / 100) + '%' + Timings.comboDisplay;
 			else
 			scoreBar.text += divider + 'Accuracy: ' + Std.string(Math.floor(Timings.getAccuracy() * 100) / 100) + '%' + ratingCB;
 			scoreBar.text += divider + 'Combo Breaks: ' + Std.string(PlayState.misses);
 			scoreBar.text += divider + 'Rank: ' + Std.string(Timings.returnScoreRating().toUpperCase());
-			}
-			else scoreBar.text += divider + 'Accuracy: NaN%' + divider + 'Combo Breaks: 0' + divider + 'Rank: ?';
 		}
 
 		scoreBar.x = ((FlxG.width / 2) - (scoreBar.width / 2));
@@ -234,9 +278,6 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		if (!Init.trueSettings.get('Reduced Movements'))
 		{
 		tweenIcons();
-
-		iconP1.updateHitbox();
-		iconP2.updateHitbox();
 		}
 		//
 	}

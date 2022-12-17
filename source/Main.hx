@@ -71,7 +71,7 @@ class Main extends Sprite
 	public static var mainClassState:Class<FlxState> = Init; // Determine the main class state of the game
 	public static var framerate:Int = 144; // How many frames per second the game should run at.
 
-	public static var gameVersion:String = '0.3';
+	public static var gameVersion:String = '0.3.1';
 	public static var oriVersion:String = '1.0';
 
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
@@ -112,6 +112,15 @@ class Main extends Sprite
 			['mom'],
 			[FlxColor.fromRGB(203, 113, 170)],
 			'MOMMY MUST MURDER'
+		],
+	];
+
+	public static var noStoryWeeks:Array<Dynamic> = [
+		[
+			['Astrophile'],
+			['senpai'],
+			[FlxColor.fromRGB(246, 147, 255)],
+			'sorry lol'
 		],
 	];
 
@@ -250,7 +259,7 @@ class Main extends Sprite
 			}
 		}
 
-		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/Yoshubs/Forever-Engine";
+		errMsg += "\nUncaught Error: " + e.error + "\nPlease report this error to the GitHub page: https://github.com/ClassicBoost/Starcatcher-Forever-Source";
 
 		if (!FileSystem.exists("./crash/"))
 			FileSystem.createDirectory("./crash/");

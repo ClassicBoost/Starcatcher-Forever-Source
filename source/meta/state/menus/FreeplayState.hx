@@ -79,6 +79,12 @@ class FreeplayState extends MusicBeatState
 			for (j in cast(Main.gameWeeks[i][0], Array<Dynamic>))
 				existingSongs.push(j.toLowerCase());
 		}
+		for (i in 0...Main.noStoryWeeks.length)
+		{
+			addWeek(Main.noStoryWeeks[i][0], i, Main.noStoryWeeks[i][1], Main.noStoryWeeks[i][2]);
+			for (j in cast(Main.noStoryWeeks[i][0], Array<Dynamic>))
+				existingSongs.push(j.toLowerCase());
+		}
 
 		// */
 
@@ -133,7 +139,7 @@ class FreeplayState extends MusicBeatState
 		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 
-		scoreBG = new FlxSprite(scoreText.x - scoreText.width, 0).makeGraphic(Std.int(FlxG.width * 0.35), 66, 0xFF000000);
+		scoreBG = new FlxSprite(scoreText.x - scoreText.width, 0).makeGraphic(Std.int(FlxG.width * 0.35), 40, 0xFF000000);
 		scoreBG.alpha = 0.6;
 		add(scoreBG);
 

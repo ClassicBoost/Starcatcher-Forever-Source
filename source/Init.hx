@@ -77,6 +77,12 @@ class Init extends FlxState
 			'Darkens non-ui elements, useful if you find the characters and backgrounds distracting.',
 			NOT_FORCED
 		],
+		'Icon Damage' => [
+			true,
+			Checkmark,
+			'If checked, everytime you miss the player will show it\'s losing icon no matter how much HP.',
+			NOT_FORCED
+		],
 		'Opacity Type' => [
 			'UI',
 			Selector,
