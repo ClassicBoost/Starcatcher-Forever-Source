@@ -305,7 +305,9 @@ class TitleState extends MusicBeatState
 			case 5:
 				createCoolText(['Starcatcher created by']);
 			case 7:
-				addMoreText('Stardust Tunes', 'Heartlocket', 'Criminalicy');
+				addMoreText('Stardust Tunes');
+				addMoreText('Heartlocket');
+				addMoreText('Criminalicy');
 			// credTextShit.text += '\nNewgrounds';
 
 			case 8:
@@ -334,7 +336,7 @@ class TitleState extends MusicBeatState
 			case 15:
 				addMoreText('Funkin'); // credTextShit.text += '\nFunkin';
 			case 16:
-				addMoreText('Starcatcher')
+				addMoreText('Starcatcher');
 			case 17:
 				skipIntro();
 		}

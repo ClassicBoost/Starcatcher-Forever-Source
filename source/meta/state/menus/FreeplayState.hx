@@ -23,6 +23,7 @@ import openfl.media.Sound;
 import sys.FileSystem;
 import sys.thread.Mutex;
 import sys.thread.Thread;
+import flixel.util.FlxTimer;
 
 using StringTools;
 
@@ -48,6 +49,11 @@ class FreeplayState extends MusicBeatState
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
+
+	private var lengthshit:Float = 0.6;
+	private var disablescreenbop:Bool = false;
+	private var disablebop = false;
+	private var disablethisthingy:Bool = false;
 
 	private var iconArray:Array<HealthIcon> = [];
 
@@ -110,12 +116,19 @@ class FreeplayState extends MusicBeatState
 		Discord.changePresence('FREEPLAY MENU', 'Main Menu');
 		#end
 
+		Conductor.changeBPM(100);
+
 		// LOAD CHARACTERS
 		bg = new FlxSprite().loadGraphic(Paths.image('menus/base/menuDesat'));
 		add(bg);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
+
+		disablebop = false;
+		lengthshit = 0.6;
+		disablescreenbop = false;
+		disablethisthingy = false;
 
 		for (i in 0...songs.length)
 		{
@@ -214,6 +227,20 @@ class FreeplayState extends MusicBeatState
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
 
+		if (curSelected == 1) lengthshit = 0.469;
+		else if (curSelected == 2) lengthshit = 0.339;
+		else if (curSelected == 3 || curSelected == 4) lengthshit = 0.4;
+		else if (curSelected == 5) lengthshit = 0.364;
+		else if (curSelected == 6 || curSelected == 12) lengthshit = 0.333;
+		else if (curSelected == 7) lengthshit = 0.462;
+		else if (curSelected == 8) lengthshit = 0.42;
+		else if (curSelected == 9) lengthshit = 0.429;
+		else if (curSelected == 10) lengthshit = 0.545;
+		else if (curSelected == 11) lengthshit = 0.48;
+		else if (curSelected == 13) lengthshit = 0.417;
+		else lengthshit = 0.6;
+
+
 		if (upP)
 			changeSelection(-1);
 		else if (downP)
@@ -227,6 +254,7 @@ class FreeplayState extends MusicBeatState
 		if (controls.BACK)
 		{
 			threadActive = false;
+			if(zoomTween != null) zoomTween.cancel();
 			Main.switchState(this, new MainMenuState());
 		}
 
@@ -249,6 +277,13 @@ class FreeplayState extends MusicBeatState
 
 			Main.switchState(this, new PlayState());
 		}
+
+		if (!disablebop && !disablethisthingy) {
+			disablethisthingy = true;
+			new FlxTimer().start(lengthshit, zoomCam);
+		}
+
+		FlxG.camera.zoom = FlxMath.lerp(1, FlxG.camera.zoom, CoolUtil.boundTo(1 - (elapsed * 3.125), 0, 1));
 
 		// Adhere the position of all the things (I'm sorry it was just so ugly before I had to fix it Shubs)
 		scoreText.text = "PERSONAL BEST:" + lerpScore;
@@ -274,6 +309,28 @@ class FreeplayState extends MusicBeatState
 	}
 
 	var lastDifficulty:String;
+	var zoomTween:FlxTween;
+
+	public function zoomCam(time:FlxTimer = null) {
+		if (!disablebop) {
+		disablebop = true;
+		if (disablethisthingy) {
+		FlxG.camera.zoom = 1.1;
+		zoomoutthing();
+		}
+		disablebop = false;
+		disablethisthingy = false;
+	}
+	}
+
+	function zoomoutthing() {
+		if(zoomTween != null) zoomTween.cancel();
+		zoomTween = FlxTween.tween(FlxG.camera, {zoom: 1}, 1, {ease: FlxEase.circOut, onComplete: function(twn:FlxTween)
+			{
+				zoomTween = null;
+			}
+		});
+	}
 
 	function changeDiff(change:Int = 0)
 	{
