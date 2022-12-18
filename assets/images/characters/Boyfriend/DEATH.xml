@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="DEATH.png">
+<SubTexture name="start0000" x="0" y="0" width="11" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0001" x="11" y="0" width="36" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0002" x="47" y="0" width="65" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0003" x="0" y="25" width="97" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0004" x="112" y="0" width="117" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0005" x="0" y="50" width="149" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0006" x="0" y="75" width="159" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0007" x="0" y="100" width="179" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0008" x="0" y="125" width="204" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0009" x="0" y="150" width="214" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0010" x="229" y="0" width="239" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0011" x="0" y="175" width="268" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0012" x="0" y="200" width="293" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0013" x="0" y="225" width="318" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="start0014" x="0" y="250" width="338" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+<SubTexture name="idle0000" x="0" y="250" width="338" height="25" frameX="-5" frameY="-8" frameWidth="349" frameHeight="42" />
+</TextureAtlas>

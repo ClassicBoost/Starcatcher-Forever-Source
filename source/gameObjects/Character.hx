@@ -295,11 +295,11 @@ class Character extends FNFSprite
 			 */
 
 			case 'bf-dead':
-				frames = Paths.getSparrowAtlas('characters/Boyfriend/BF_DEATH');
+				frames = Paths.getSparrowAtlas('characters/Boyfriend/DEATH');
 
-				animation.addByPrefix('firstDeath', "BF dies", 24, false);
-				animation.addByPrefix('deathLoop', "BF Dead Loop", 24, true);
-				animation.addByPrefix('deathConfirm', "BF Dead confirm", 24, false);
+				animation.addByPrefix('firstDeath', "start", 24, false);
+				animation.addByPrefix('deathLoop', "idle", 24, true);
+				animation.addByPrefix('deathConfirm', "idle", 24, false);
 
 				playAnim('firstDeath');
 

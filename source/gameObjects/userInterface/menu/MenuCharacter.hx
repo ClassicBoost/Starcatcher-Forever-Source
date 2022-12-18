@@ -13,10 +13,10 @@ class MenuCharacter extends FlxSprite
 		'bf' => ["BF idle dance white", 24, true, 0.9, 100, 100],
 		'bfConfirm' => ['BF HEY!!', 24, false, 0.9, 100, 100],
 		'gf' => ["GF Dancing Beat WHITE", 24, true, 1, 100, 100],
-		'dad' => ["Dad idle dance BLACK LINE", 24, true, 1 * 0.5, 0, 0],
-		'spooky' => ["spooky dance idle BLACK LINES", 24, true, 1 * 0.5, 0, 90],
-		'pico' => ["Pico Idle Dance", 24, true, 1 * 0.5, 0, 100],
-		'mom' => ["Mom Idle BLACK LINES", 24, true, 1 * 0.5, 0, -20],
+		'dad' => ["Dad idle dance BLACK LINE", 24, true, 1 * 0.5, 0, -120],
+		'spooky' => ["spooky dance idle BLACK LINES", 24, true, 1 * 0.5, 0, 40],
+		'pico' => ["Pico Idle Dance", 24, true, 1 * 0.5, 0, -120],
+		'mom' => ["Mom Idle BLACK LINES", 24, true, 1 * 0.5, 0, -220],
 		'parents-christmas' => ["Parent Christmas Idle", 24, true, 0.8, -100, 50],
 		'senpai' => ["SENPAI idle Black Lines", 24, true, 1.4 * 0.5, -50, 100],
 	];
@@ -43,8 +43,8 @@ class MenuCharacter extends FlxSprite
 		var assortedValues = curCharacterMap.get(newCharacter);
 		if (assortedValues != null)
 		{
-			if (!visible)
-				visible = true;
+			
+			visible = false;
 
 			// animation
 			animation.addByPrefix(newCharacter, assortedValues[0], assortedValues[1], assortedValues[2]);

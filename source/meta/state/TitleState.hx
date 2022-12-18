@@ -292,7 +292,7 @@ class TitleState extends MusicBeatState
 
 			// credTextShit.visible = true;
 			case 3:
-				addMoreText('Classic1926');
+				addMoreText('This idiot');
 				ngSpr.visible = true;
 			// credTextShit.text += '\npresent...';
 			// credTextShit.addText();

@@ -25,11 +25,11 @@ class GameOverSubstate extends MusicBeatSubState
 		var daBf:String = '';
 		switch (daBoyfriendType)
 		{
-			case 'bf-og':
-				daBf = daBoyfriendType;
-			case 'bf-pixel':
-				daBf = 'bf-pixel-dead';
-				stageSuffix = '-pixel';
+		//	case 'bf-og':
+		//		daBf = daBoyfriendType;
+		//	case 'bf-pixel':
+		//		daBf = 'bf-pixel-dead';
+		//		stageSuffix = '-pixel';
 			default:
 				daBf = 'bf-dead';
 		}
@@ -40,11 +40,12 @@ class GameOverSubstate extends MusicBeatSubState
 
 		bf = new Boyfriend();
 		bf.setCharacter(x, y + PlayState.boyfriend.height, daBf);
+		bf.screenCenter();
 		add(bf);
 
 		PlayState.boyfriend.destroy();
 
-		camFollow = new FlxObject(bf.getGraphicMidpoint().x + 20, bf.getGraphicMidpoint().y - 40, 1, 1);
+	//	camFollow = new FlxObject(bf.getGraphicMidpoint().x + 20, bf.getGraphicMidpoint().y - 40, 1, 1);
 		add(camFollow);
 
 		FlxG.sound.play(Paths.sound('bfFaint' + stageSuffix));

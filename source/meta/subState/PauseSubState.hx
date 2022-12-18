@@ -63,7 +63,7 @@ class PauseSubState extends MusicBeatSubState
 		levelDifficulty.scrollFactor.set();
 		levelDifficulty.setFormat(Paths.font('vcr.ttf'), 32);
 		levelDifficulty.updateHitbox();
-		add(levelDifficulty);
+	//	add(levelDifficulty);
 
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;

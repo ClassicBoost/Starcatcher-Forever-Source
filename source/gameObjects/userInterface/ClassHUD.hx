@@ -76,7 +76,7 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		if (Init.trueSettings.get('Downscroll'))
 			barY = 64;
 
-		oriHPBG = new FlxSprite(210,0).loadGraphic(Paths.image('UI/oristuff/healthbg'));
+		oriHPBG = new FlxSprite(210,0).loadGraphic(Paths.image('UI/default/oristuff/healthbg'));
 		if (!Init.trueSettings.get('Downscroll')) oriHPBG.y = 554;
 		else oriHPBG.y = 3;	
 		oriHPBG.scrollFactor.set();
@@ -138,22 +138,6 @@ class ClassHUD extends FlxTypedGroup<FlxBasic>
 		demoshit.setBorderStyle(OUTLINE, FlxColor.BLACK, 1.5);
 		demoshit.screenCenter(X);
 		add(demoshit);
-
-		// small info bar, kinda like the KE watermark
-		// based on scoretxt which I will set up as well
-		var infoDisplay:String = CoolUtil.dashToSpace(PlayState.SONG.song);
-		var engineDisplay:String = "Ori Engine v" + Main.oriVersion + " (FE v" + Main.gameVersion + ")";
-		var engineBar:FlxText = new FlxText(0, FlxG.height - 30, 0, engineDisplay, 16);
-		engineBar.setFormat(Paths.font(choosenFont), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		engineBar.updateHitbox();
-		engineBar.x = FlxG.width - engineBar.width - 5;
-		engineBar.scrollFactor.set();
-	//	add(engineBar);
-
-		infoBar = new FlxText(5, FlxG.height - 30, 0, infoDisplay, 20);
-		infoBar.setFormat(Paths.font(choosenFont), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		infoBar.scrollFactor.set();
-	//	add(infoBar);
 
 		// counter
 		if (Init.trueSettings.get('Counter') != 'None') {

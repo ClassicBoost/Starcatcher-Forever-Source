@@ -44,6 +44,8 @@ class StoryMenuState extends MusicBeatState
 	var grpWeekText:FlxTypedGroup<MenuItem>;
 	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
 
+	var menubg:FlxSprite;
+
 	var grpLocks:FlxTypedGroup<FlxSprite>;
 
 	var difficultySelectors:FlxGroup;
@@ -84,6 +86,17 @@ class StoryMenuState extends MusicBeatState
 
 		var ui_tex = Paths.getSparrowAtlas('menus/base/storymenu/campaign_menu_UI_assets');
 		var yellowBG:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 400, 0xFF516DF7);
+
+		menubg = new FlxSprite();
+		menubg.frames = Paths.getSparrowAtlas('menus/base/storymenu/menu_background');
+		menubg.animation.addByPrefix('week0', 'week0', 24, true);
+		menubg.animation.addByPrefix('week1', 'week1', 24, true);
+		menubg.animation.addByPrefix('no', 'no', 24, true);
+		menubg.x = 0;
+		menubg.y = 56;
+		menubg.antialiasing = true;
+		menubg.animation.play('week0');
+		add(menubg);
 
 		grpWeekText = new FlxTypedGroup<MenuItem>();
 		add(grpWeekText);
@@ -128,9 +141,10 @@ class StoryMenuState extends MusicBeatState
 			weekCharacterThing.antialiasing = true;
 			switch (weekCharacterThing.character)
 			{
-				case 'dad':
+				case 'dad','mom':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
 					weekCharacterThing.updateHitbox();
+					weekCharacterThing.x -= 120;
 				case 'bf':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.9));
 					weekCharacterThing.updateHitbox();
@@ -138,8 +152,10 @@ class StoryMenuState extends MusicBeatState
 				case 'gf':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.5));
 					weekCharacterThing.updateHitbox();
+					weekCharacterThing.x += 10;
 				case 'pico':
 					weekCharacterThing.flipX = true;
+					weekCharacterThing.x -= 120;
 				case 'parents-christmas':
 					weekCharacterThing.setGraphicSize(Std.int(weekCharacterThing.width * 0.9));
 					weekCharacterThing.updateHitbox();
@@ -209,6 +225,10 @@ class StoryMenuState extends MusicBeatState
 		// FlxG.watch.addQuick('font', scoreText.font);
 
 		difficultySelectors.visible = weekUnlocked[curWeek];
+
+		if (curWeek == 0) menubg.animation.play('week0');
+		else if (curWeek == 1) menubg.animation.play('week1');
+		else menubg.animation.play('no');
 
 		grpLocks.forEach(function(lock:FlxSprite)
 		{

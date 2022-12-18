@@ -461,6 +461,7 @@ class PlayState extends MusicBeatState
 		songinfonew.setFormat(Paths.font("vcr.ttf"), 40, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		songinfonew.scrollFactor.set();
 		songinfonew.alpha = 1;
+		songinfonew.setBorderStyle(OUTLINE, FlxColor.BLACK, 2);
 		songinfonew.visible = true;
 		add(songinfonew);
 
