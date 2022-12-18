@@ -74,6 +74,7 @@ class OptionsMenuState extends MusicBeatState
 					['', null],
 					['Hit Sounds', getFromOption],
 					['Late Damage', getFromOption],
+					['Practice Mode', getFromOption],
 					['', null],
 					['Meta Settings', null],
 					['', null],

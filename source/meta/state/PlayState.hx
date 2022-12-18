@@ -161,6 +161,9 @@ class PlayState extends MusicBeatState
 	private var bopbopbop:Bool = false;
 	public static var determinedChartType:String = "";
 
+	private var scaredAnimationForce:String = "idle";
+	private var scaredBeat:Int = 2;
+
 	public static var bop:Int = 1;
 
 	// strumlines
@@ -804,6 +807,7 @@ class PlayState extends MusicBeatState
 
 			if (health <= 0 && startedCountdown)
 			{
+				if (!Init.trueSettings.get("Practice Mode")) {
 				// startTimer.active = false;
 				persistentUpdate = false;
 				persistentDraw = false;
@@ -812,6 +816,8 @@ class PlayState extends MusicBeatState
 				resetMusic();
 
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+				}
+				else health = 0;
 
 				// discord stuffs should go here
 			}
@@ -1094,7 +1100,7 @@ class PlayState extends MusicBeatState
 			var stringDirection:String = UIStaticArrow.getArrowFromNumber(direction);
 			health -= 0.1;
 			enablescore = true;
-			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+			FlxG.sound.play(Paths.sound('avali_hurt'), 0.7);
 			character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
 		}
 		decreaseCombo(popMiss);
@@ -1293,7 +1299,7 @@ class PlayState extends MusicBeatState
 		Timings.updateAccuracy(Timings.judgementsMap.get(baseRating)[3]);
 		score = Std.int(Timings.judgementsMap.get(baseRating)[2]);
 
-		songScore += score;
+		if (!Init.trueSettings.get("Practice Mode")) songScore += score;
 
 		popUpCombo();
 	}
@@ -1698,8 +1704,15 @@ class PlayState extends MusicBeatState
 
 		if ((boyfriend.animation.curAnim.name.startsWith("idle") 
 		|| boyfriend.animation.curAnim.name.startsWith("dance")) 
-			&& (curBeat % 2 == 0 || boyfriend.characterData.quickDancer))
+			&& (curBeat % 2 == 0 || boyfriend.characterData.quickDancer)) {
+			if (health >= 0.4) {
+			boyfriend.playAnim('idle', true);
 			boyfriend.dance();
+			}
+			else {
+			boyfriend.playAnim('scared', true);
+			}
+		}
 
 		// added this for opponent cus it wasn't here before and skater would just freeze
 		if ((dadOpponent.animation.curAnim.name.startsWith("idle") 
@@ -1730,6 +1743,8 @@ class PlayState extends MusicBeatState
 					hud.zoom += 0.05;
 			}
 		}
+
+		if (curBeat % 2 == 0 && health <= 0.4) FlxG.sound.play(Paths.sound('heartbeat'), 1);
 
 		if (curBeat % 2 == 0) {
 			bop = 1;

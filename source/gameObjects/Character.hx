@@ -210,36 +210,31 @@ class Character extends FNFSprite
 
 				playAnim('idle');
 			case 'pico':
-				tex = Paths.getSparrowAtlas('characters/Pico/Pico_FNF_assetss');
+				tex = Paths.getSparrowAtlas('characters/Pico/PICO_robot');
 				frames = tex;
-				animation.addByPrefix('idle', "Pico Idle Dance", 24, false);
-				animation.addByPrefix('singUP', 'pico Up note0', 24, false);
-				animation.addByPrefix('singDOWN', 'Pico Down Note0', 24, false);
+				animation.addByPrefix('idle', "idle", 24, false);
+				animation.addByPrefix('singUP', 'up', 24, false);
+				animation.addByPrefix('singDOWN', 'down', 24, false);
 				if (isPlayer)
 				{
-					animation.addByPrefix('singLEFT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss', 24, false);
+					animation.addByPrefix('singLEFT', 'left', 24, false);
+					animation.addByPrefix('singRIGHT', 'right', 24, false);
 				}
 				else
 				{
 					// Need to be flipped! REDO THIS LATER!
-					animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico Note Right Miss', 24, false);
+					animation.addByPrefix('singLEFT', 'right', 24, false);
+					animation.addByPrefix('singRIGHT', 'left', 24, false);
 				}
-
-				animation.addByPrefix('singUPmiss', 'pico Up note miss', 24);
-				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);
 
 				playAnim('idle');
 
 				flipX = true;
 
+				characterData.camOffsetX = 150;
+
 			case 'bf':
-				frames = Paths.getSparrowAtlas('characters/Boyfriend/BOYFRIEND');
+			/*	frames = Paths.getSparrowAtlas('characters/Boyfriend/BOYFRIEND');
 
 				animation.addByPrefix('idle', 'BF idle dance', 24, false);
 				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
@@ -253,11 +248,28 @@ class Character extends FNFSprite
 				animation.addByPrefix('hey', 'BF HEY', 24, false);
 				animation.addByPrefix('scared', 'BF idle shaking', 24);
 
+				playAnim('idle');*/
+
+				frames = Paths.getSparrowAtlas('characters/Boyfriend/BF_AVALI');
+
+				animation.addByPrefix('idle', 'idle', 24, false);
+				animation.addByPrefix('singUP', 'up0', 24, false);
+				animation.addByPrefix('singLEFT', 'left0', 24, false);
+				animation.addByPrefix('singRIGHT', 'right0', 24, false);
+				animation.addByPrefix('singDOWN', 'down0', 24, false);
+				animation.addByPrefix('singUPmiss', 'up miss0', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'left miss0', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'right miss0', 24, false);
+				animation.addByPrefix('singDOWNmiss', 'down miss0', 24, false);
+				animation.addByPrefix('hey', 'hey', 24, false);
+				animation.addByPrefix('scared', 'scared', 24);
+
 				playAnim('idle');
 
 				flipX = true;
 
-				characterData.offsetY = 70;
+				characterData.offsetY = 40;
+				characterData.camOffsetX = 150;
 			/*
 				case 'bf-og':
 					frames = Paths.getSparrowAtlas('characters/og/BOYFRIEND');
@@ -337,22 +349,25 @@ class Character extends FNFSprite
 
 				flipX = true;
 			case 'bf-car':
-				var tex = Paths.getSparrowAtlas('characters/Boyfriend/bfCar');
-				frames = tex;
-				animation.addByPrefix('idle', 'BF idle dance', 24, false);
-				animation.addByIndices('idlePost', 'BF idle dance', [8, 9, 10, 11, 12, 13, 14], "", 24, true);
-				animation.addByPrefix('singUP', 'BF NOTE UP0', 24, false);
-				animation.addByPrefix('singLEFT', 'BF NOTE LEFT0', 24, false);
-				animation.addByPrefix('singRIGHT', 'BF NOTE RIGHT0', 24, false);
-				animation.addByPrefix('singDOWN', 'BF NOTE DOWN0', 24, false);
-				animation.addByPrefix('singUPmiss', 'BF NOTE UP MISS', 24, false);
-				animation.addByPrefix('singLEFTmiss', 'BF NOTE LEFT MISS', 24, false);
-				animation.addByPrefix('singRIGHTmiss', 'BF NOTE RIGHT MISS', 24, false);
-				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
+				frames = Paths.getSparrowAtlas('characters/Boyfriend/BF_AVALI');
+
+				animation.addByPrefix('idle', 'idle', 24, false);
+				animation.addByPrefix('singUP', 'up0', 24, false);
+				animation.addByPrefix('singLEFT', 'left0', 24, false);
+				animation.addByPrefix('singRIGHT', 'right0', 24, false);
+				animation.addByPrefix('singDOWN', 'down0', 24, false);
+				animation.addByPrefix('singUPmiss', 'up miss0', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'left miss0', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'right miss0', 24, false);
+				animation.addByPrefix('singDOWNmiss', 'down miss0', 24, false);
+				animation.addByPrefix('hey', 'hey', 24, false);
 
 				playAnim('idle');
 
 				flipX = true;
+
+				characterData.offsetY = 40;
+				characterData.camOffsetX = 150;
 		/*	case 'bf-pixel':
 				frames = Paths.getSparrowAtlas('characters/Boyfriend/bfPixel');
 				animation.addByPrefix('idle', 'BF IDLE', 24, false);

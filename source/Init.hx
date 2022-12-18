@@ -104,6 +104,12 @@ class Init extends FlxState
 			'Whether to disable Anti-aliasing. Helps improve performance in FPS.',
 			NOT_FORCED
 		],
+		'Practice Mode' => [
+			false,
+			Checkmark,
+			'If enabled, you can\'t die, but at the same time can\'t get score.',
+			NOT_FORCED
+		],
 		'Flashing Lights' => [
 			true,
 			Checkmark,
